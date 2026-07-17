@@ -12,6 +12,7 @@
 8. [Миграция с Redux](#миграция-с-redux)
 9. [Лучшие практики](#лучшие-практики)
 10. [Антипаттерны](#антипаттерны)
+11. [Шпаргалка: Zustand ↔ Pinia](#шпаргалка-zustand--pinia)
 
 ---
 
@@ -41,6 +42,8 @@ function Counter() {
 - **Селекторы** — компоненты подписываются только на нужные части состояния.
 - **Работает вне React** — доступ к состоянию из любого места (обработчики событий, утилиты, middleware).
 - **Размер** — ~1 KB (minified + gzipped).
+
+> 💡 **Pinia:** Философски Pinia — это «Zustand для Vue». Обе библиотеки появились как ответ на избыточный бойлерплейт «официальных» решений (Redux/Vuex). Ключевое архитектурное различие: Zustand — это один хук `create`, а Pinia использует `defineStore` с явным разделением на `state`/`getters`/`actions`. В Zustand состояние и действия «плоские» — и то и другое просто свойства объекта.
 
 ---
 
@@ -134,6 +137,17 @@ function Counter() {
 }
 ```
 
+> 💡 **Pinia:** Та же философия — избавление от бойлерплейта. Сравните:
+> ```js
+> // Vuex (старый способ) — actions, mutations, commit, dispatch...
+> // Pinia — один defineStore:
+> export const useCounterStore = defineStore('counter', {
+>   state: () => ({ count: 0 }),
+>   actions: { increment() { this.count++ } },
+> });
+> ```
+> Pinia сделала для Vue то же, что Zustand для React: убрала прослойку mutations/action-types и позволила мутировать состояние напрямую.
+
 ### Проблема 3: Контекст для высокочастотных обновлений
 
 React Context не оптимизирован для частых обновлений — при изменении значения все потребители контекста перерендериваются:
@@ -176,6 +190,8 @@ function Counter() {
 }
 ```
 
+> 💡 **Pinia:** Во Vue этой проблемы нет благодаря системе реактивности Vue — изменение reactive-объекта автоматически отслеживается на уровне отдельных свойств. В Pinia компонент, читающий `store.count`, не перерендерится при изменении `store.name`. Поэтому Pinia не нуждается в селекторах — достаточно деструктуризации через `storeToRefs()`.
+
 ---
 
 ## Ключевые понятия
@@ -204,6 +220,21 @@ const useStore = create((set, get) => ({
   },
 }));
 ```
+
+> 💡 **Pinia:** `defineStore` явно разделяет `state`, `getters` и `actions`:
+> ```js
+> export const useStore = defineStore('main', {
+>   state: () => ({ user: null, theme: 'light' }),
+>   actions: {
+>     setUser(user) { this.user = user; },
+>     resetUser() {
+>       console.log('Resetting user:', this.user);
+>       this.user = null;
+>     },
+>   },
+> });
+> ```
+> В Zustand `get()` — аналог доступа к `this` внутри Pinia-actions. Оба подхода позволяют читать текущее состояние в действиях без подписки компонента.
 
 ### Селекторы
 
@@ -234,6 +265,8 @@ function BadComponent() {
 }
 ```
 
+> 💡 **Pinia:** Селекторы — чисто React-концепция, порождённая отсутствием встроенной реактивности. В Pinia вы просто обращаетесь к `store.count` напрямую, и Vue сам отслеживает зависимости. Аналог селекторов в Pinia — геттеры (`getters`), но они нужны для вычисляемых значений, а не для подписки.
+
 ### Immer для неизменяемости
 
 Zustand по умолчанию поддерживает Immer для удобного обновления вложенных объектов:
@@ -259,6 +292,8 @@ const useStore = create(
   }))
 );
 ```
+
+> 💡 **Pinia:** Во Vue мутации «из коробки» являются стандартным паттерном. Immer для Zustand — это «костыль», добавляющий поведение, которое в Pinia работает нативно благодаря Vue-реактивности. В Pinia вы можете написать `this.user.profile.settings.notifications = enabled` прямо в экшене без всяких прослоек.
 
 ### Middleware
 
@@ -287,6 +322,8 @@ const useStore = create(
 - `logger` — логирование изменений состояния
 - `immer` — поддержка мутаций через Immer
 - `combine` — объединение нескольких хранилищ
+
+> 💡 **Pinia:** В Pinia аналог middleware — **плагины** (`pinia.use(...)`). Они также позволяют добавить персистентность (через `pinia-plugin-persistedstate`), логирование, или DevTools-интеграцию. Отличие: плагины Pinia применяются глобально ко всем сторам, а middleware Zustand оборачивает конкретный стор.
 
 ---
 
@@ -380,9 +417,9 @@ document.addEventListener("visibilitychange", () => {
 });
 ```
 
----
+> 💡 **Pinia:** В Pinia доступ вне компонентов ещё проще — вы просто импортируете `useAuthStore()` и вызываете её. Никакого `getState()` не нужно, потому что Pinia-стор сам по себе является реактивным объектом. `useAuthStore.getState()` в Zustand ≈ `useAuthStore().$state` в Pinia.
 
-## Сценарии применения
+---
 
 ### 1. Глобальное UI-состояние
 
@@ -757,6 +794,8 @@ export const useUIStore = create((set) => ({
 }));
 ```
 
+> 💡 **Pinia:** Концепция нескольких независимых сторов в Pinia идентична — каждый `defineStore` создаёт отдельный стор. Более того, в Pinia это стандартный паттерн «из коробки», тогда как в Zustand это сознательное архитектурное решение разработчика.
+
 ### Слайсы (Slices)
 
 Для больших хранилищ можно разделить логику на слайсы:
@@ -791,6 +830,15 @@ function Component() {
   const addToCart = useStore((state) => state.addToCart);
 }
 ```
+
+> 💡 **Pinia:** В Pinia аналог слайсов — **composables** (setup-сторы). Вы можете вынести логику в отдельные функции и скомпоновать их в одном сторе:
+> ```js
+> export const useStore = defineStore('main', () => {
+>   const user = useUserLogic();   // composable
+>   const cart = useCartLogic();   // composable
+>   return { ...user, ...cart };
+> });
+> ```
 
 ### Асинхронные действия
 
@@ -926,9 +974,9 @@ function UserProfile() {
 }
 ```
 
----
+> 💡 **Pinia:** TypeScript-поддержка в Pinia на том же уровне — оба лидируют среди стейт-менеджеров. Разница в том, что Pinia выводит типы автоматически из `state()`, тогда как в Zustand вы обычно явно передаёте дженерик: `create<AuthState>(...)`.
 
-## Zustand vs TanStack Query
+---
 
 Zustand и [TanStack Query](./tanstack_query.md) решают разные задачи. Понимание различий критично для правильного выбора.
 
@@ -1197,6 +1245,8 @@ const useSettingsStore = create((set) => ({ theme: "light" }));
 const useUIStore = create((set) => ({ sidebarOpen: false }));
 ```
 
+> 💡 **Pinia:** Правило разделения по доменам в Pinia работает точно так же: `useAuthStore`, `useCartStore`, `useSettingsStore`. Это идиоматично для обеих библиотек.
+
 ### 3. Используйте persist для пользовательских настроек
 
 Сохраняйте настройки пользователя в localStorage:
@@ -1325,6 +1375,8 @@ const useStore = create((set) => ({
 }));
 ```
 
+> ⚠️ **Ключевое отличие от Pinia:** Прямая мутация — антипаттерн в Zustand, но стандартный паттерн в Pinia! `this.items.push(item)` в Pinia-экшене — это нормально и правильно, потому что Vue отслеживает мутации через Proxy. Zustand требует иммутабельности (новые объекты), если не используется Immer-middleware.
+
 ### 5. Избыточное использование middleware
 
 ```jsx
@@ -1374,3 +1426,26 @@ Zustand — это **минималистичная и мощная библио
 - Пагинация и бесконечная прокрутка
 
 **Рекомендуемый паттерн:** Используйте Zustand для клиентского состояния и [TanStack Query](./tanstack_query.md) для серверного состояния. Вместе они заменяют Redux в большинстве современных приложений.
+
+---
+
+## Шпаргалка: Zustand ↔ Pinia
+
+| Концепт | Zustand | Pinia |
+|---|---|---|
+| **Создание стора** | `create((set, get) => ({...}))` | `defineStore('id', { state, getters, actions })` |
+| **Чтение состояния** | `useStore(s => s.field)` (селектор) | `store.field` (прямой доступ) |
+| **Изменение состояния** | `set({ field: newValue })` | `this.field = newValue` (мутация) |
+| **Иммутабельность** | Обязательна (Immer опционально) | Не нужна (нативная реактивность) |
+| **Асинхронные действия** | `async () => { set(...) }` | `async action() { this.x = ... }` |
+| **Доступ к текущему состоянию** | `get()` | `this` |
+| **Доступ вне компонентов** | `useStore.getState()` | `useStore().$state` |
+| **Плагины/расширения** | Middleware (на уровне стора) | Plugins (глобально) |
+| **Персистентность** | `persist(...)` middleware | `pinia-plugin-persistedstate` |
+| **DevTools** | Redux DevTools | Vue DevTools (вкладка Pinia) |
+| **Несколько сторов** | Несколько `create()` | Несколько `defineStore()` |
+| **Разделение логики** | Слайсы (функции-фабрики) | Setup-сторы / композаблы |
+| **Провайдер** | Не требуется | Требуется `createPinia()` + `app.use()` |
+| **Размер** | ~1 KB | ~2 KB |
+
+> 🎯 **Главный вывод:** Если вы знаете Pinia — вы уже знаете 80% философии Zustand. Разница в деталях: Zustand заточен под иммутабельную модель React, Pinia — под реактивную модель Vue. Иммутабельность и селекторы в Zustand — это плата за отсутствие встроенной реактивности в React.
