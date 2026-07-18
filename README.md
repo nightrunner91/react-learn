@@ -27,7 +27,8 @@
 23. [React Suspense — глубокое погружение](./docs/react_suspense.md) 📖
 24. [Zustand — глубокое погружение](./docs/zustand.md) 📖
 25. [TanStack Query — глубокое погружение](./docs/tanstack_query.md) 📖
-26. [Дополнительные ресурсы](#дополнительные-ресурсы)
+26. [Мемоизация в React — глубокое погружение](./docs/react_memorization.md) 📖
+27. [Дополнительные ресурсы](#дополнительные-ресурсы)
 
 ---
 
