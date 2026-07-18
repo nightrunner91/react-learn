@@ -139,6 +139,63 @@ const [state, dispatch] = useReducer(reducer, initialArg, init);
 
 **Возвращает:** кортеж `[state, dispatch]`, где `dispatch` — функция, принимающая экшон и стабильная между рендерами (можно смело передавать как пропс без `useCallback`).
 
+### Разбор сигнатуры по шагам
+
+Запись `const [state, dispatch] = useReducer(...)` — это обычная **деструктуризация массива** в JavaScript. `useReducer` возвращает массив из двух элементов: текущее состояние и функцию для его обновления. Имена `state` и `dispatch` — соглашение, вы можете назвать их как угодно:
+
+```js
+// Без деструктуризации — то же самое, но длиннее:
+const result = useReducer(reducer, initialState);
+const state = result[0];    // текущее состояние
+const dispatch = result[1]; // функция для обновления
+
+// С деструктуризацией — короче и привычнее:
+const [state, dispatch] = useReducer(reducer, initialState);
+```
+
+Теперь пошагово на примере счётчика — что происходит при каждом действии:
+
+```js
+// 1. Описываем редуктор — «как меняется состояние»
+function counterReducer(state, action) {
+  if (action.type === 'increment') {
+    return { count: state.count + 1 };
+  }
+  if (action.type === 'decrement') {
+    return { count: state.count - 1 };
+  }
+  return state;
+}
+
+// 2. Используем в компоненте
+function Counter() {
+  const [state, dispatch] = useReducer(counterReducer, { count: 0 });
+  //       ↑                    ↑                              ↑
+  //    текущее             функция,                     начальное
+  //    значение            которой мы                   состояние
+  //    { count: 0 }        «командуем»                  при первом
+  //                        обновить                     рендере
+
+  return (
+    <>
+      <p>Счёт: {state.count}</p>
+      <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+      <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+    </>
+  );
+}
+```
+
+**Что происходит при клике на «+»:**
+
+1. Вы вызываете `dispatch({ type: 'increment' })`.
+2. React берёт текущий `state`: `{ count: 0 }`.
+3. React вызывает `counterReducer({ count: 0 }, { type: 'increment' })`.
+4. Редуктор возвращает **новый объект**: `{ count: 1 }`.
+5. React сравнивает старый и новый `state` через `Object.is` — ссылки разные, значит состояние изменилось.
+6. React планирует ререндер компонента с новым `state`.
+7. На экране: `Счёт: 1`.
+
 ### Почему не просто useState
 
 Возьмём типичный сценарий: форма с пятью полями, валидацией и состоянием отправки. На `useState` вы получите 6–7 вызовов и растянутую по компоненту логику обновления:
