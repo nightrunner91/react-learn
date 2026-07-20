@@ -29,7 +29,8 @@
 25. [TanStack Query — глубокое погружение](./docs/tanstack_query.md) 📖
 26. [Мемоизация в React — глубокое погружение](./docs/react_memorization.md) 📖
 27. [React Fiber — глубокое погружение](./docs/react_fiber.md) 📖
-28. [Дополнительные ресурсы](#дополнительные-ресурсы)
+28. [React Server Components — глубокое погружение](./docs/react_server_components.md) 📖
+29. [Дополнительные ресурсы](#дополнительные-ресурсы)
 
 ---
 
