@@ -87,6 +87,27 @@ export default async function PostsPage() {
 5. HTML отправляется клиенту
 6. Клиент получает готовый HTML без JavaScript для этого компонента
 
+> **Pages Router (устарело):** В старом Pages Router (Next.js 12 и ниже) использовались `getServerSideProps` и `getStaticProps` вместо `async` компонентов:
+> ```tsx
+> // pages/posts/index.tsx — Pages Router (устарело)
+> export async function getServerSideProps() {
+>   const posts = await fetch('https://api.example.com/posts').then(r => r.json())
+>   return { props: { posts } } // SSR: выполняется при каждом запросе
+> }
+> 
+> export async function getStaticProps() {
+>   const posts = await fetch('https://api.example.com/posts').then(r => r.json())
+>   return { props: { posts }, revalidate: 3600 } // SSG: выполняется при сборке
+> }
+> 
+> export default function PostsPage({ posts }) {
+>   return <ul>{posts.map(p => <li key={p.id}>{p.title}</li>)}</ul>
+> }
+> ```
+> В App Router (Next.js 13+) эти функции **не нужны**. Вместо них используй `async` компоненты с опциями кэширования:
+> - `cache: 'no-store'` → аналог `getServerSideProps` (динамические данные)
+> - `next: { revalidate: N }` → аналог `getStaticProps` с ISR (статические данные с TTL)
+
 > **Nuxt:** Аналогичный результат достигается через `useFetch` / `useAsyncData` в `<script setup>`. Данные загружаются на сервере при SSR, сериализуются в `<script>` тег (payload), и на клиенте восстанавливаются из payload без повторного запроса. Синтаксис: `const { data } = await useFetch('/api/posts')`.
 
 ### Fetch с параметрами
