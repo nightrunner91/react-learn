@@ -760,7 +760,180 @@ export async function generateMetadata({ params }) {
 }
 ```
 
-## 8. Dynamic Imports — Code Splitting
+## 8. Sitemap — Карта сайта для SEO
+
+### Что такое sitemap
+
+Sitemap (sitemap.xml) — это XML-файл, который сообщает поисковым системам о всех страницах сайта, их приоритете и частоте обновления. Next.js предоставляет встроенный способ генерации sitemap через файл `app/sitemap.ts`.
+
+### Базовая генерация sitemap
+
+```tsx
+// app/sitemap.ts
+import { MetadataRoute } from 'next'
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  return [
+    {
+      url: 'https://example.com',
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 1,
+    },
+    {
+      url: 'https://example.com/about',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://example.com/blog',
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.5,
+    },
+  ]
+}
+```
+
+Next.js автоматически сгенерирует файл `sitemap.xml` по адресу `https://example.com/sitemap.xml`.
+
+### Динамический sitemap с данными из БД
+
+Для сайтов с динамическим контентом (блог, магазин) генерируйте sitemap из реальных данных:
+
+```tsx
+// app/sitemap.ts
+import { MetadataRoute } from 'next'
+
+async function getAllPosts() {
+  const res = await fetch('https://api.example.com/posts')
+  return res.json()
+}
+
+export default async function sitemap(): MetadataRoute.Sitemap {
+  const posts = await getAllPosts()
+
+  const staticRoutes = [
+    {
+      url: 'https://example.com',
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 1,
+    },
+    {
+      url: 'https://example.com/about',
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
+  ]
+
+  const blogRoutes = posts.map((post) => ({
+    url: `https://example.com/blog/${post.slug}`,
+    lastModified: new Date(post.updatedAt),
+    changeFrequency: 'weekly' as const,
+    priority: 0.6,
+  }))
+
+  return [...staticRoutes, ...blogRoutes]
+}
+```
+
+### Sitemap Index — для больших сайтов
+
+Если у вас более 50 000 URL, нужно разбить sitemap на несколько файлов и создать sitemap index:
+
+```tsx
+// app/sitemap.ts
+import { MetadataRoute } from 'next'
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  return [
+    {
+      url: 'https://example.com/sitemap/posts.xml',
+      lastModified: new Date(),
+    },
+    {
+      url: 'https://example.com/sitemap/pages.xml',
+      lastModified: new Date(),
+    },
+  ]
+}
+```
+
+### Параметры sitemap
+
+Каждый URL в sitemap поддерживает следующие поля:
+
+```tsx
+{
+  url: string,                // Обязательный — полный URL страницы
+  lastModified?: string | Date, // Когда страница последний раз обновлялась
+  changeFrequency?: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never',
+  priority?: number,          // Приоритет от 0.0 до 1.0 (по умолчанию 0.5)
+  alternates?: {              // Альтернативные версии страницы
+    languages?: Record<string, string>, // hreflang ссылки
+  },
+}
+```
+
+### Sitemap с альтернативными языками (hreflang)
+
+Для мультиязычных сайтов добавьте hreflang ссылки:
+
+```tsx
+// app/sitemap.ts
+import { MetadataRoute } from 'next'
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  return [
+    {
+      url: 'https://example.com/about',
+      lastModified: new Date(),
+      alternates: {
+        languages: {
+          'en-US': 'https://example.com/en/about',
+          'ru-RU': 'https://example.com/ru/about',
+          'de-DE': 'https://example.com/de/about',
+        },
+      },
+    },
+  ]
+}
+```
+
+### Robots.txt — указание на sitemap
+
+Добавьте ссылку на sitemap в `robots.txt`:
+
+```tsx
+// app/robots.ts
+import { MetadataRoute } from 'next'
+
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: {
+      userAgent: '*',
+      allow: '/',
+      disallow: '/admin/',
+    },
+    sitemap: 'https://example.com/sitemap.xml',
+  }
+}
+```
+
+### Лучшие практики для sitemap
+
+1. **Генерируйте динамически** — sitemap должен отражать реальное состояние сайта
+2. **Указывайте lastModified** — помогает поисковикам понимать свежесть контента
+3. **Используйте changeFrequency** — `daily` для блога, `monthly` для статических страниц
+4. **Приоритеты имеют смысл** — главная страница = 1.0, важные разделы = 0.8, остальные = 0.5
+5. **Разбивайте на несколько файлов** — если URL больше 50 000
+6. **Добавьте в robots.txt** — поисковики найдут sitemap автоматически
+7. **Кэшируйте при необходимости** — для больших сайтов используйте ISR
+
+## 9. Dynamic Imports — Code Splitting
 
 ### Что такое Code Splitting
 
@@ -1113,7 +1286,7 @@ export default function Page() {
 }
 ```
 
-## 9. Оптимизация third-party библиотек
+## 10. Оптимизация third-party библиотек
 
 ### Избегайте больших зависимостей
 
@@ -1160,7 +1333,7 @@ export function RichTextEditor() {
 }
 ```
 
-## 10. Bundle Analysis
+## 11. Bundle Analysis
 
 ### Анализ бандла
 
@@ -1188,7 +1361,7 @@ ANALYZE=true npm run build
 3. **Remove unused code** — удалите неиспользуемые зависимости
 4. **Use lighter alternatives** — замените тяжелые библиотеки
 
-## 11. Edge Runtime
+## 12. Edge Runtime
 
 ### Использование Edge Runtime
 
@@ -1213,7 +1386,7 @@ export default function EdgePage() {
 - Node.js API
 - Большие зависимости
 
-## 12. Дополнительные оптимизации
+## 13. Дополнительные оптимизации
 
 ### Оптимизация API Routes
 
@@ -1310,6 +1483,8 @@ export default function Page() {
 - [ ] Настроить Metadata API для всех страниц
 - [ ] Добавить Open Graph теги
 - [ ] Оптимизировать title и description
+- [ ] Создать sitemap.xml через app/sitemap.ts
+- [ ] Добавить ссылку на sitemap в robots.txt
 - [ ] Использовать семантический HTML
 
 ### Edge Cases
