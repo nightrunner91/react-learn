@@ -23,7 +23,14 @@
 19. [Инструменты сборки и развёртывание](#инструменты-сборки-и-развёртывание)
 20. [TypeScript и React](#typescript-и-react)
 21. [Доступность в React](#доступность-в-react)
-22. [Дополнительные ресурсы](#дополнительные-ресурсы)
+22. [Паттерны проектирования и структура файлов](#паттерны-проектирования-и-структура-файлов)
+23. [Безопасность в React и Next.js](#безопасность-в-react-и-nextjs)
+24. [WebSocket в React и Next.js](#websocket-в-react-и-nextjs)
+25. [Мониторинг через Sentry](#мониторинг-через-sentry)
+26. [React Native — введение](#react-native--введение)
+27. [Progressive Web Apps (PWA)](#progressive-web-apps-pwa)
+28. [Тестирование и LLM](#тестирование-и-llm)
+29. [Дополнительные ресурсы](#дополнительные-ресурсы)
 
 ---
 
@@ -1064,6 +1071,196 @@ useEffect(() => {
 
 ---
 
+## Паттерны проектирования и структура файлов
+
+**В67. Какие паттерны проектирования компонентов используются в React?**
+
+Основные паттерны:
+
+- **Композиция** — построение сложного UI через вложение компонентов (`children`, именованные слоты).
+- **Compound Components** — составные компоненты, разделяющие состояние через Context (Radix UI, Headless UI). (Подробнее: [Паттерны проектирования](./docs/shared/design_patterns.md#compound-components))
+- **Render Props** — передача функции как пропса для инверсии контроля над рендерингом.
+- **Custom Hooks** — основной паттерн переиспользования логики в современном React.
+- **Container / Presentational** — разделение на «умные» (данные, логика) и «глупые» (только UI) компоненты.
+- **State Reducer** — передача контроля над обновлением состояния потребителю.
+- **Control Props** — поддержка управляемого и неуправляемого режимов (как `<input value>` vs `<input defaultValue>`).
+
+**В68. Как организовать структуру файлов в React/Next.js проекте?**
+
+Основные подходы:
+
+- **По типу** — `components/`, `hooks/`, `services/`, `utils/` (для маленьких проектов).
+- **По фиче** — `features/auth/`, `features/products/` (всё, что относится к фиче, в одном месте).
+- **Feature-Sliced Design (FSD)** — `app/`, `pages/`, `widgets/`, `features/`, `entities/`, `shared/` (строгая иерархия слоёв).
+- **Domain-driven** — группировка по бизнес-домену с разделением на `domains/`, `infrastructure/`, `application/`, `presentation/`.
+
+В Next.js App Router структура частично навязана файловой системой: `app/` для маршрутов, `components/` для UI, `lib/` для утилит и API-клиента. (Подробнее: [Структура файлов](./docs/shared/design_patterns.md#структура-файлов-подходы))
+
+---
+
+## Безопасность в React и Next.js
+
+**В69. Как React защищает от XSS-атак?**
+
+React автоматически экранирует все значения в JSX-выражениях `{variable}` и атрибутах. Скрипты, вставленные через строки, не выполняются.
+
+Опасные места:
+- `dangerouslySetInnerHTML` — требует санитизации через DOMPurify.
+- URL-атрибуты (`href`, `src`) — валидация протокола (`javascript:` XSS).
+- Прямой доступ к DOM через `ref.current.innerHTML`.
+- Third-party библиотеки (markdown-парсеры) без санитизации.
+
+(Подробнее: [Безопасность — XSS](./docs/shared/security.md#xss-cross-site-scripting))
+
+**В70. Как защитить Server Actions в Next.js?**
+
+Server Actions выполняются на сервере, но принимают данные от клиента. Обязательно:
+
+1. **Валидация входных данных** — Zod-схемы для всех параметров.
+2. **Проверка авторизации** — `await auth()` в каждом действии.
+3. **Rate limiting** — ограничение частоты вызовов.
+4. **Обновление версий** — CVE-2025-55182 (RCE в Server Actions) исправлен в React 19.0.4+ / 19.1.4+ / 19.2.3+.
+
+(Подробнее: [Безопасность Server Actions](./docs/shared/security.md#безопасность-server-actions))
+
+**В71. Как безопасно работать с секретами в Next.js?**
+
+- Переменные **без** префикса `NEXT_PUBLIC_` доступны только на сервере (Server Components, API Routes, middleware).
+- Переменные **с** префиксом `NEXT_PUBLIC_` попадают в клиентский бандл — храните только публичные ключи.
+- `.env.local` не коммитится в git.
+- Для production используйте Vercel Environment Variables, AWS Secrets Manager, Doppler.
+
+(Подробнее: [Безопасная работа с секретами](./docs/shared/security.md#безопасная-работа-с-секретами))
+
+---
+
+## WebSocket в React и Next.js
+
+**В72. Когда использовать WebSocket вместо HTTP?**
+
+WebSocket нужен для полнодуплексной связи в реальном времени:
+- Чат и мессенджеры
+- Коллаборативные редакторы
+- Торговые платформы (обновления цен)
+- Мультиплеерные игры
+- Push-уведомления
+
+Для односторонней передачи (сервер → клиент) проще использовать **Server-Sent Events (SSE)** — автоматическое переподключение, работа через обычный HTTP. Для запрос-ответ — обычный REST.
+
+(Подробнее: [WebSocket — когда использовать](./docs/shared/websocket_react_next.md#websocket-vs-http-vs-sse))
+
+**В73. Как интегрировать WebSocket с React?**
+
+Базовый подход — хук `useWebSocket`, инкапсулирующий:
+- Установку и закрытие соединения в `useEffect`
+- Обработку переподключений (exponential backoff)
+- Очередь сообщений для отправки
+- Интеграцию с Zustand/TanStack Query для синхронизации с глобальным состоянием
+
+В Next.js WebSocket-соединение устанавливается только на клиенте (в `useEffect`). Для production используйте отдельный WebSocket-сервер или managed-сервисы (Pusher, Ably, Supabase Realtime).
+
+(Подробнее: [WebSocket в React](./docs/shared/websocket_react_next.md#хук-usewebsocket))
+
+---
+
+## Мониторинг через Sentry
+
+**В74. Что такое Sentry и зачем он нужен?**
+
+Sentry — платформа мониторинга ошибок и производительности в реальном времени. Отслеживает:
+- **Exceptions** — неперехваченные ошибки JavaScript
+- **Performance issues** — медленные загрузки страниц, API-запросы
+- **Releases** — какие ошибки появились в новых версиях
+- **User impact** — сколько пользователей затронуто
+
+Без мониторинга вы узнаёте о проблемах из жалоб пользователей — часто слишком поздно. (Подробнее: [Sentry](./docs/shared/sentry_monitoring.md))
+
+**В75. Как настроить Sentry в Next.js?**
+
+```bash
+npx @sentry/wizard@latest -i nextjs
+```
+
+Wizard автоматически создаст `sentry.client.config.js`, `sentry.server.config.js`, `sentry.edge.config.js` и настроит `next.config.js` с `withSentryConfig`. Ключевые параметры: `tracesSampleRate` (performance), `replaysSessionSampleRate` (Session Replay), `release` (версия приложения). (Подробнее: [Установка Sentry](./docs/shared/sentry_monitoring.md#установка-и-настройка))
+
+---
+
+## React Native — введение
+
+**В76. Что такое React Native и чем он отличается от React?**
+
+React Native — фреймворк для создания нативных мобильных приложений (iOS и Android) на React. Код пишется на JavaScript/TypeScript, но рендеринг происходит в нативные UI-компоненты (UIKit, Android Views) — не WebView.
+
+Ключевые отличия от React:
+- Нет HTML/CSS — вместо этого `<View>`, `<Text>`, `StyleSheet`
+- Нет `onClick` — вместо этого `onPress`
+- Нет `<form>`, `<input>` — вместо этого `<TextInput>`
+- Навигация через React Navigation / Expo Router
+- Доступ к нативным модулям (камера, GPS, push)
+
+Всё остальное (хуки, состояние, Context, Zustand, TanStack Query) работает как в React. (Подробнее: [React Native](./docs/shared/react_native_intro.md))
+
+**В77. Expo или Bare CLI?**
+
+В 2026 году **Expo — рекомендуемый способ** начать React Native проект. Expo даёт:
+- Не нужен Xcode / Android Studio для разработки
+- EAS Build — облачная сборка
+- EAS Update — OTA-обновления без ревью сторов
+- Expo Router — файловая маршрутизация (как Next.js)
+- Готовые модули (камера, геолокация, уведомления)
+
+Bare CLI нужен только если требуется полный контроль над нативным кодом. (Подробнее: [Expo vs Bare](./docs/shared/react_native_intro.md#expo-vs-bare-cli))
+
+---
+
+## Progressive Web Apps (PWA)
+
+**В78. Что такое PWA и какие три компонента нужны?**
+
+PWA — веб-приложение, работающее как нативное: офлайн, push-уведомления, установка на домашний экран.
+
+Три столпа:
+1. **HTTPS** — обязательно (кроме localhost)
+2. **Web App Manifest** — JSON-файл с иконками, темой, `display: standalone`
+3. **Service Worker** — перехватывает запросы, кэширует ресурсы, работает офлайн
+
+PWA не нужен App Store, обновляется автоматически, весит несколько MB вместо 100+ MB нативного приложения. (Подробнее: [PWA](./docs/shared/pwa.md))
+
+**В79. Какие стратегии кэширования используются в Service Workers?**
+
+- **Cache First** — отдаёт из кэша, если нет — загружает из сети (статические ресурсы)
+- **Network First** — загружает из сети, если нет — отдаёт из кэша (API, динамический контент)
+- **Stale While Revalidate** — отдаёт из кэша сразу, обновляет в фоне (быстро + свежо)
+- **Cache Only** — только из кэша (версионированные файлы)
+
+Workbox упрощает реализацию: `new CacheFirst({ cacheName: "images" })`. (Подробнее: [Стратегии кэширования](./docs/shared/pwa.md#кэширование-стратегий))
+
+---
+
+## Тестирование и LLM
+
+**В80. Какой стек тестирования рекомендуется в 2026 году?**
+
+- **Vitest** — раннер модульных/интеграционных тестов (нативный для Vite, заменил Jest)
+- **React Testing Library** — тестирование с точки зрения пользователя (getByRole, getByLabelText)
+- **Playwright** — E2E-тестирование (предпочитается перед Cypress)
+- **MSW** — мокирование API на сетевом уровне (для тестов и разработки)
+
+Главный принцип: тестируйте **поведение**, а не реализацию. Используйте `screen.getByRole()` вместо `container.querySelector()`. (Подробнее: [Тестирование](./docs/shared/testing_llm.md))
+
+**В81. Как использовать LLM для написания тестов?**
+
+LLM (ChatGPT, Claude, Copilot, Cursor) помогают:
+- **Генерация тестов** — опишите функцию, LLM напишет тесты с edge cases
+- **Генерация edge cases** — спросите «какие edge cases нужно протестировать?»
+- **Генерация тестовых данных** — фабрики, моки, fixtures
+- **Ревью тестов** — попросите проанализировать существующие тесты
+- **Написание E2E-сценариев** — опишите user flow, LLM сгенерирует Playwright-тест
+
+Промпт для генерации: «Напиши тесты для функции X на Vitest. Функция принимает Y, возвращает Z. Учитывай edge cases.» (Подробнее: [LLM для тестирования](./docs/shared/testing_llm.md#llm-для-тестирования))
+
+---
+
 ## Дополнительные ресурсы 📚
 
 Подробная документация по Suspense доступна в [docs/react/react_suspense.md](./docs/react/react_suspense.md) — механизм работы, сценарии использования, примеры кода и лучшие практики.
@@ -1099,6 +1296,31 @@ useEffect(() => {
 - [react.dev — Learn React](https://react.dev/learn) — официальный интерактивный туториал.
 - [Josh W Comeau's Blog](https://www.joshwcomeau.com) — глубокие статьи по React.
 - [TkDodo's Blog](https://tkdodo.eu/blog) — продвинутые хуки и паттерны TanStack Query.
+
+### Архитектура и паттерны
+- [Feature-Sliced Design](https://feature-sliced.design) — методология структуры файлов.
+- [Patterns.dev](https://www.patterns.dev) — паттерны проектирования в React.
+- [Bulletproof React](https://github.com/alan2207/bulletproof-react) — best practices архитектуры.
+
+### Безопасность
+- [OWASP Top 10](https://owasp.org/www-project-top-ten/) — основные веб-уязвимости.
+- [DOMPurify](https://github.com/cure53/DOMPurify) — санитизация HTML.
+- [Helmet.js](https://helmetjs.github.io) — HTTP-заголовки безопасности (Express).
+
+### Мониторинг
+- [Sentry](https://sentry.io) — мониторинг ошибок и производительности.
+- [LogRocket](https://logrocket.com) — запись сессий пользователей.
+- [OpenReplay](https://openreplay.com) — open-source session replay.
+
+### Мобильная разработка
+- [React Native](https://reactnative.dev) — нативные мобильные приложения на React.
+- [Expo](https://expo.dev) — managed workflow для React Native.
+- [Expo Router](https://docs.expo.dev/router/introduction/) — файловая маршрутизация.
+
+### PWA и офлайн
+- [web.dev — PWA](https://web.dev/progressive-web-apps/) — руководство по PWA.
+- [Workbox](https://developer.chrome.com/docs/workbox/) — библиотеки для Service Workers.
+- [web.dev — Offline](https://web.dev/offline-ux-choice-guides/) — стратегии офлайн-работы.
 
 ### Что отслеживать (горизонт 2026)
 - **Расширение режимов `<Activity />`** — дополнительные режимы помимо `visible`/`hidden`, запланированные для будущих релизов.
