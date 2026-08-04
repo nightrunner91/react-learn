@@ -78,7 +78,7 @@ JSX позволяет смешивать JavaScript-выражения `{}`, у
 Пробрасывание пропсов возникает, когда пропсы приходится передавать через множество промежуточных компонентов, которым они не нужны, лишь бы добраться до глубоко вложенного дочернего компонента. Способы решения:
 
 - **Context API** — передача значений по дереву без явного пробрасывания.
-- **Zustand / Jotai / Redux** — внешние хранилища состояния, доступные из любого компонента. (Подробнее: [Zustand](./docs/shared/zustand.md))
+- **Zustand / Jotai / Redux** — внешние хранилища состояния, доступные из любого компонента. (Подробнее: [Zustand](./docs/state-management/zustand.md))
 - **Серверные компоненты React** — данные могут загружаться на уровне сервера и передаваться напрямую.
 - **Композиция компонентов** — реструктуризация компонентов для совместного размещения данных и их потребителей.
 
@@ -642,9 +642,9 @@ const counterSlice = createSlice({
 
 **В40. Какие альтернативы Redux популярны в 2026 году?**
 
-- **Zustand** — минималистичное хранилище на основе хуков; без бойлерплейта; самый популярный легковесный вариант. (Подробнее: [Zustand](./docs/shared/zustand.md))
+- **Zustand** — минималистичное хранилище на основе хуков; без бойлерплейта; самый популярный легковесный вариант. (Подробнее: [Zustand](./docs/state-management/zustand.md))
 - **Jotai** — атомарная модель состояния, вдохновлённая Recoil.
-- **TanStack Query (React Query)** — управление состоянием сервера; кэширование, фоновое обновление, оптимистичные обновления. (Подробнее: [TanStack Query](./docs/shared/tanstack_query.md))
+- **TanStack Query (React Query)** — управление состоянием сервера; кэширование, фоновое обновление, оптимистичные обновления. (Подробнее: [TanStack Query](./docs/state-management/tanstack_query.md))
 - **Valtio** — состояние на основе прокси с мутациями.
 - **Context + useReducer** — встроенные средства, достаточные для локального состояния среднего масштаба.
 
@@ -1079,7 +1079,7 @@ useEffect(() => {
 Основные паттерны:
 
 - **Композиция** — построение сложного UI через вложение компонентов (`children`, именованные слоты).
-- **Compound Components** — составные компоненты, разделяющие состояние через Context (Radix UI, Headless UI). (Подробнее: [Паттерны проектирования](./docs/shared/design_patterns.md#compound-components))
+- **Compound Components** — составные компоненты, разделяющие состояние через Context (Radix UI, Headless UI). (Подробнее: [Паттерны проектирования](./docs/architecture/design_patterns.md#compound-components))
 - **Render Props** — передача функции как пропса для инверсии контроля над рендерингом.
 - **Custom Hooks** — основной паттерн переиспользования логики в современном React.
 - **Container / Presentational** — разделение на «умные» (данные, логика) и «глупые» (только UI) компоненты.
@@ -1095,7 +1095,7 @@ useEffect(() => {
 - **Feature-Sliced Design (FSD)** — `app/`, `pages/`, `widgets/`, `features/`, `entities/`, `shared/` (строгая иерархия слоёв).
 - **Domain-driven** — группировка по бизнес-домену с разделением на `domains/`, `infrastructure/`, `application/`, `presentation/`.
 
-В Next.js App Router структура частично навязана файловой системой: `app/` для маршрутов, `components/` для UI, `lib/` для утилит и API-клиента. (Подробнее: [Структура файлов](./docs/shared/design_patterns.md#структура-файлов-подходы))
+В Next.js App Router структура частично навязана файловой системой: `app/` для маршрутов, `components/` для UI, `lib/` для утилит и API-клиента. (Подробнее: [Структура файлов](./docs/architecture/design_patterns.md#структура-файлов-подходы))
 
 **В68.1. Как классические паттерны GoF применяются во Frontend (React и Vue)?**
 
@@ -1106,7 +1106,7 @@ useEffect(() => {
 - **Синглтон** — ES-модули, сторы (Zustand, Pinia), Context-провайдеры как единый источник истины.
 - **Наблюдатель** — встроенная реактивность фреймворков (useState, ref/reactive), event bus, useSyncExternalStore.
 
-(Подробнее: [Классические паттерны GoF во Frontend](./docs/shared/gof_patterns_frontend.md))
+(Подробнее: [Классические паттерны GoF во Frontend](./docs/architecture/gof_patterns_frontend.md))
 
 ---
 
@@ -1121,7 +1121,7 @@ useEffect(() => {
 - **Синглтон** — единственный экземпляр объекта. В frontend — ES-модули, Zustand/Pinia сторы, Context-провайдеры. Опасен при SSR из-за «протекания» состояния между запросами.
 - **Наблюдатель** — автоматическое уведомление при изменении состояния. Встроен в реактивность обоих фреймворков: `useState`/`useReducer` в React, `ref`/`reactive`/`watch` во Vue.
 
-(Подробнее: [Классические паттерны GoF во Frontend](./docs/shared/gof_patterns_frontend.md))
+(Подробнее: [Классические паттерны GoF во Frontend](./docs/architecture/gof_patterns_frontend.md))
 
 ---
 
@@ -1137,7 +1137,7 @@ React автоматически экранирует все значения в
 - Прямой доступ к DOM через `ref.current.innerHTML`.
 - Third-party библиотеки (markdown-парсеры) без санитизации.
 
-(Подробнее: [Безопасность — XSS](./docs/shared/security.md#xss-cross-site-scripting))
+(Подробнее: [Безопасность — XSS](./docs/security/security.md#xss-cross-site-scripting))
 
 **В70. Как защитить Server Actions в Next.js?**
 
@@ -1148,7 +1148,7 @@ Server Actions выполняются на сервере, но принимаю
 3. **Rate limiting** — ограничение частоты вызовов.
 4. **Обновление версий** — CVE-2025-55182 (RCE в Server Actions) исправлен в React 19.0.4+ / 19.1.4+ / 19.2.3+.
 
-(Подробнее: [Безопасность Server Actions](./docs/shared/security.md#безопасность-server-actions))
+(Подробнее: [Безопасность Server Actions](./docs/security/security.md#безопасность-server-actions))
 
 **В71. Как безопасно работать с секретами в Next.js?**
 
@@ -1157,7 +1157,7 @@ Server Actions выполняются на сервере, но принимаю
 - `.env.local` не коммитится в git.
 - Для production используйте Vercel Environment Variables, AWS Secrets Manager, Doppler.
 
-(Подробнее: [Безопасная работа с секретами](./docs/shared/security.md#безопасная-работа-с-секретами))
+(Подробнее: [Безопасная работа с секретами](./docs/security/security.md#безопасная-работа-с-секретами))
 
 ---
 
@@ -1174,7 +1174,7 @@ WebSocket нужен для полнодуплексной связи в реа�
 
 Для односторонней передачи (сервер → клиент) проще использовать **Server-Sent Events (SSE)** — автоматическое переподключение, работа через обычный HTTP. Для запрос-ответ — обычный REST.
 
-(Подробнее: [WebSocket — когда использовать](./docs/shared/websocket_react_next.md#websocket-vs-http-vs-sse))
+(Подробнее: [WebSocket — когда использовать](./docs/api-communication/websocket_react_next.md#websocket-vs-http-vs-sse))
 
 **В73. Как интегрировать WebSocket с React?**
 
@@ -1186,7 +1186,7 @@ WebSocket нужен для полнодуплексной связи в реа�
 
 В Next.js WebSocket-соединение устанавливается только на клиенте (в `useEffect`). Для production используйте отдельный WebSocket-сервер или managed-сервисы (Pusher, Ably, Supabase Realtime).
 
-(Подробнее: [WebSocket в React](./docs/shared/websocket_react_next.md#хук-usewebsocket))
+(Подробнее: [WebSocket в React](./docs/api-communication/websocket_react_next.md#хук-usewebsocket))
 
 ---
 
@@ -1200,7 +1200,7 @@ Sentry — платформа мониторинга ошибок и произ�
 - **Releases** — какие ошибки появились в новых версиях
 - **User impact** — сколько пользователей затронуто
 
-Без мониторинга вы узнаёте о проблемах из жалоб пользователей — часто слишком поздно. (Подробнее: [Sentry](./docs/shared/sentry_monitoring.md))
+Без мониторинга вы узнаёте о проблемах из жалоб пользователей — часто слишком поздно. (Подробнее: [Sentry](./docs/monitoring-testing/sentry_monitoring.md))
 
 **В75. Как настроить Sentry в Next.js?**
 
@@ -1208,7 +1208,7 @@ Sentry — платформа мониторинга ошибок и произ�
 npx @sentry/wizard@latest -i nextjs
 ```
 
-Wizard автоматически создаст `sentry.client.config.js`, `sentry.server.config.js`, `sentry.edge.config.js` и настроит `next.config.js` с `withSentryConfig`. Ключевые параметры: `tracesSampleRate` (performance), `replaysSessionSampleRate` (Session Replay), `release` (версия приложения). (Подробнее: [Установка Sentry](./docs/shared/sentry_monitoring.md#установка-и-настройка))
+Wizard автоматически создаст `sentry.client.config.js`, `sentry.server.config.js`, `sentry.edge.config.js` и настроит `next.config.js` с `withSentryConfig`. Ключевые параметры: `tracesSampleRate` (performance), `replaysSessionSampleRate` (Session Replay), `release` (версия приложения). (Подробнее: [Установка Sentry](./docs/monitoring-testing/sentry_monitoring.md#установка-и-настройка))
 
 ---
 
@@ -1225,7 +1225,7 @@ React Native — фреймворк для создания нативных м�
 - Навигация через React Navigation / Expo Router
 - Доступ к нативным модулям (камера, GPS, push)
 
-Всё остальное (хуки, состояние, Context, Zustand, TanStack Query) работает как в React. (Подробнее: [React Native](./docs/shared/react_native_intro.md))
+Всё остальное (хуки, состояние, Context, Zustand, TanStack Query) работает как в React. (Подробнее: [React Native](./docs/platforms/react_native_intro.md))
 
 **В77. Expo или Bare CLI?**
 
@@ -1236,7 +1236,7 @@ React Native — фреймворк для создания нативных м�
 - Expo Router — файловая маршрутизация (как Next.js)
 - Готовые модули (камера, геолокация, уведомления)
 
-Bare CLI нужен только если требуется полный контроль над нативным кодом. (Подробнее: [Expo vs Bare](./docs/shared/react_native_intro.md#expo-vs-bare-cli))
+Bare CLI нужен только если требуется полный контроль над нативным кодом. (Подробнее: [Expo vs Bare](./docs/platforms/react_native_intro.md#expo-vs-bare-cli))
 
 ---
 
@@ -1251,7 +1251,7 @@ PWA — веб-приложение, работающее как нативно�
 2. **Web App Manifest** — JSON-файл с иконками, темой, `display: standalone`
 3. **Service Worker** — перехватывает запросы, кэширует ресурсы, работает офлайн
 
-PWA не нужен App Store, обновляется автоматически, весит несколько MB вместо 100+ MB нативного приложения. (Подробнее: [PWA](./docs/shared/pwa.md))
+PWA не нужен App Store, обновляется автоматически, весит несколько MB вместо 100+ MB нативного приложения. (Подробнее: [PWA](./docs/platforms/pwa.md))
 
 **В79. Какие стратегии кэширования используются в Service Workers?**
 
@@ -1260,7 +1260,7 @@ PWA не нужен App Store, обновляется автоматически
 - **Stale While Revalidate** — отдаёт из кэша сразу, обновляет в фоне (быстро + свежо)
 - **Cache Only** — только из кэша (версионированные файлы)
 
-Workbox упрощает реализацию: `new CacheFirst({ cacheName: "images" })`. (Подробнее: [Стратегии кэширования](./docs/shared/pwa.md#кэширование-стратегий))
+Workbox упрощает реализацию: `new CacheFirst({ cacheName: "images" })`. (Подробнее: [Стратегии кэширования](./docs/platforms/pwa.md#кэширование-стратегий))
 
 ---
 
@@ -1273,7 +1273,7 @@ Workbox упрощает реализацию: `new CacheFirst({ cacheName: "ima
 - **Playwright** — E2E-тестирование (предпочитается перед Cypress)
 - **MSW** — мокирование API на сетевом уровне (для тестов и разработки)
 
-Главный принцип: тестируйте **поведение**, а не реализацию. Используйте `screen.getByRole()` вместо `container.querySelector()`. (Подробнее: [Тестирование](./docs/shared/testing_llm.md))
+Главный принцип: тестируйте **поведение**, а не реализацию. Используйте `screen.getByRole()` вместо `container.querySelector()`. (Подробнее: [Тестирование](./docs/monitoring-testing/testing_llm.md))
 
 **В81. Как использовать LLM для написания тестов?**
 
@@ -1284,7 +1284,7 @@ LLM (ChatGPT, Claude, Copilot, Cursor) помогают:
 - **Ревью тестов** — попросите проанализировать существующие тесты
 - **Написание E2E-сценариев** — опишите user flow, LLM сгенерирует Playwright-тест
 
-Промпт для генерации: «Напиши тесты для функции X на Vitest. Функция принимает Y, возвращает Z. Учитывай edge cases.» (Подробнее: [LLM для тестирования](./docs/shared/testing_llm.md#llm-для-тестирования))
+Промпт для генерации: «Напиши тесты для функции X на Vitest. Функция принимает Y, возвращает Z. Учитывай edge cases.» (Подробнее: [LLM для тестирования](./docs/monitoring-testing/testing_llm.md#llm-для-тестирования))
 
 ---
 
@@ -1328,7 +1328,7 @@ LLM (ChatGPT, Claude, Copilot, Cursor) помогают:
 - [Feature-Sliced Design](https://feature-sliced.design) — методология структуры файлов.
 - [Patterns.dev](https://www.patterns.dev) — паттерны проектирования в React.
 - [Bulletproof React](https://github.com/alan2207/bulletproof-react) — best practices архитектуры.
-- [Классические паттерны GoF во Frontend](./docs/shared/gof_patterns_frontend.md) — Абстрактная фабрика, Декоратор, Синглтон, Наблюдатель в React и Vue.
+- [Классические паттерны GoF во Frontend](./docs/architecture/gof_patterns_frontend.md) — Абстрактная фабрика, Декоратор, Синглтон, Наблюдатель в React и Vue.
 
 ### Безопасность
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/) — основные веб-уязвимости.
