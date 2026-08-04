@@ -24,13 +24,14 @@
 20. [TypeScript и React](#typescript-и-react)
 21. [Доступность в React](#доступность-в-react)
 22. [Паттерны проектирования и структура файлов](#паттерны-проектирования-и-структура-файлов)
-23. [Безопасность в React и Next.js](#безопасность-в-react-и-nextjs)
-24. [WebSocket в React и Next.js](#websocket-в-react-и-nextjs)
-25. [Мониторинг через Sentry](#мониторинг-через-sentry)
-26. [React Native — введение](#react-native--введение)
-27. [Progressive Web Apps (PWA)](#progressive-web-apps-pwa)
-28. [Тестирование и LLM](#тестирование-и-llm)
-29. [Дополнительные ресурсы](#дополнительные-ресурсы)
+23. [Классические паттерны GoF во Frontend (React и Vue)](#классические-паттерны-gof-во-frontend-react-и-vue)
+24. [Безопасность в React и Next.js](#безопасность-в-react-и-nextjs)
+25. [WebSocket в React и Next.js](#websocket-в-react-и-nextjs)
+26. [Мониторинг через Sentry](#мониторинг-через-sentry)
+27. [React Native — введение](#react-native--введение)
+28. [Progressive Web Apps (PWA)](#progressive-web-apps-pwa)
+29. [Тестирование и LLM](#тестирование-и-llm)
+30. [Дополнительные ресурсы](#дополнительные-ресурсы)
 
 ---
 
@@ -1096,6 +1097,32 @@ useEffect(() => {
 
 В Next.js App Router структура частично навязана файловой системой: `app/` для маршрутов, `components/` для UI, `lib/` для утилит и API-клиента. (Подробнее: [Структура файлов](./docs/shared/design_patterns.md#структура-файлов-подходы))
 
+**В68.1. Как классические паттерны GoF применяются во Frontend (React и Vue)?**
+
+Четыре ключевых паттерна из GoF адаптируются под реалии frontend-разработки:
+
+- **Абстрактная фабрика** — фабрики компонентов через Context/provide-inject для темизации, мультиплатформенности и white-label решений.
+- **Декоратор** — HOC, хуки, JSX-обёртки в React; директивы, composables, обёрточные компоненты во Vue.
+- **Синглтон** — ES-модули, сторы (Zustand, Pinia), Context-провайдеры как единый источник истины.
+- **Наблюдатель** — встроенная реактивность фреймворков (useState, ref/reactive), event bus, useSyncExternalStore.
+
+(Подробнее: [Классические паттерны GoF во Frontend](./docs/shared/gof_patterns_frontend.md))
+
+---
+
+## Классические паттерны GoF во Frontend (React и Vue)
+
+**В68.1. Как классические паттерны GoF (Абстрактная фабрика, Декоратор, Синглтон, Наблюдатель) применяются во Frontend?**
+
+Четыре паттерна из книги GoF адаптируются под React и Vue:
+
+- **Абстрактная фабрика** — создание семейств связанных компонентов (темизация, мультиплатформенность). В React — через Context + фабричные объекты, во Vue — через provide/inject + динамические компоненты.
+- **Декоратор** — динамическое расширение функциональности. В React — HOC, хуки, JSX-обёртки; во Vue — директивы, composables, обёрточные компоненты.
+- **Синглтон** — единственный экземпляр объекта. В frontend — ES-модули, Zustand/Pinia сторы, Context-провайдеры. Опасен при SSR из-за «протекания» состояния между запросами.
+- **Наблюдатель** — автоматическое уведомление при изменении состояния. Встроен в реактивность обоих фреймворков: `useState`/`useReducer` в React, `ref`/`reactive`/`watch` во Vue.
+
+(Подробнее: [Классические паттерны GoF во Frontend](./docs/shared/gof_patterns_frontend.md))
+
 ---
 
 ## Безопасность в React и Next.js
@@ -1301,6 +1328,7 @@ LLM (ChatGPT, Claude, Copilot, Cursor) помогают:
 - [Feature-Sliced Design](https://feature-sliced.design) — методология структуры файлов.
 - [Patterns.dev](https://www.patterns.dev) — паттерны проектирования в React.
 - [Bulletproof React](https://github.com/alan2207/bulletproof-react) — best practices архитектуры.
+- [Классические паттерны GoF во Frontend](./docs/shared/gof_patterns_frontend.md) — Абстрактная фабрика, Декоратор, Синглтон, Наблюдатель в React и Vue.
 
 ### Безопасность
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/) — основные веб-уязвимости.
