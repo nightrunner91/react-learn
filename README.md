@@ -31,7 +31,15 @@
 27. [React Native — введение](#react-native--введение)
 28. [Progressive Web Apps (PWA)](#progressive-web-apps-pwa)
 29. [Тестирование и LLM](#тестирование-и-llm)
-30. [Дополнительные ресурсы](#дополнительные-ресурсы)
+30. [Основы тестирования: пирамида, принципы, стратегии](./docs/monitoring-testing/testing-fundamentals.md)
+31. [Unit-тестирование с Vitest](./docs/monitoring-testing/testing-vitest.md)
+32. [Тестирование React-компонентов](./docs/monitoring-testing/testing-react-components.md)
+33. [Мокирование и изоляция тестов](./docs/monitoring-testing/testing-mocking.md)
+34. [E2E-тестирование с Playwright](./docs/monitoring-testing/testing-e2e-playwright.md)
+35. [Тестирование в Next.js](./docs/monitoring-testing/testing-nextjs.md)
+36. [Визуальное и регрессионное тестирование](./docs/monitoring-testing/testing-visual-regression.md)
+37. [Тестирование производительности](./docs/monitoring-testing/testing-performance.md)
+38. [Дополнительные ресурсы](#дополнительные-ресурсы)
 
 ---
 
@@ -822,10 +830,12 @@ function Modal({ children, isOpen }) {
 - **Playwright** — сквозное (E2E) тестирование в браузере; предпочитается перед Cypress в новых проектах.
 - **MSW (Mock Service Worker)** — мокирование API на сетевом уровне как для тестов, так и для разработки.
 
+(Подробнее: [Основы тестирования](./docs/monitoring-testing/testing-fundamentals.md) | [Vitest](./docs/monitoring-testing/testing-vitest.md) | [Тестирование и LLM](./docs/monitoring-testing/testing_llm.md))
+
 **В50. Как написать модульный тест с React Testing Library?**
 
 ```jsx
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import Counter from "./Counter";
 
 test("increments count on click", () => {
@@ -835,6 +845,8 @@ test("increments count on click", () => {
   expect(screen.getByText("Count: 1")).toBeInTheDocument();
 });
 ```
+
+(Подробнее: [Тестирование React-компонентов](./docs/monitoring-testing/testing-react-components.md) | [Основы тестирования](./docs/monitoring-testing/testing-fundamentals.md) | [Vitest](./docs/monitoring-testing/testing-vitest.md) | [Мокирование](./docs/monitoring-testing/testing-mocking.md) | [E2E с Playwright](./docs/monitoring-testing/testing-e2e-playwright.md) | [Тестирование Next.js](./docs/monitoring-testing/testing-nextjs.md) | [Визуальное тестирование](./docs/monitoring-testing/testing-visual-regression.md) | [Тестирование производительности](./docs/monitoring-testing/testing-performance.md))
 
 **В51. Как тестировать асинхронную загрузку данных?**
 
@@ -1273,7 +1285,7 @@ Workbox упрощает реализацию: `new CacheFirst({ cacheName: "ima
 - **Playwright** — E2E-тестирование (предпочитается перед Cypress)
 - **MSW** — мокирование API на сетевом уровне (для тестов и разработки)
 
-Главный принцип: тестируйте **поведение**, а не реализацию. Используйте `screen.getByRole()` вместо `container.querySelector()`. (Подробнее: [Тестирование](./docs/monitoring-testing/testing_llm.md))
+Главный принцип: тестируйте **поведение**, а не реализацию. Используйте `screen.getByRole()` вместо `container.querySelector()`. (Подробнее: [Основы тестирования](./docs/monitoring-testing/testing-fundamentals.md) | [Vitest](./docs/monitoring-testing/testing-vitest.md) | [React Testing Library](./docs/monitoring-testing/testing-react-components.md) | [Мокирование](./docs/monitoring-testing/testing-mocking.md) | [E2E с Playwright](./docs/monitoring-testing/testing-e2e-playwright.md) | [Тестирование Next.js](./docs/monitoring-testing/testing-nextjs.md) | [Визуальное тестирование](./docs/monitoring-testing/testing-visual-regression.md) | [Тестирование производительности](./docs/monitoring-testing/testing-performance.md) | [Тестирование и LLM](./docs/monitoring-testing/testing_llm.md))
 
 **В81. Как использовать LLM для написания тестов?**
 
@@ -1313,6 +1325,14 @@ LLM (ChatGPT, Claude, Copilot, Cursor) помогают:
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
 - [Playwright](https://playwright.dev) — E2E-тестирование.
 - [MSW](https://mswjs.io) — мокирование API на сетевом уровне.
+- [Основы тестирования](./docs/monitoring-testing/testing-fundamentals.md) — пирамида, принципы, стратегии.
+- [Vitest](./docs/monitoring-testing/testing-vitest.md) — полное руководство по Vitest.
+- [Тестирование React-компонентов](./docs/monitoring-testing/testing-react-components.md) — React Testing Library.
+- [Мокирование и изоляция](./docs/monitoring-testing/testing-mocking.md) — MSW, vi.mock, фабрики данных.
+- [E2E-тестирование с Playwright](./docs/monitoring-testing/testing-e2e-playwright.md) — Playwright, Page Object Model.
+- [Тестирование в Next.js](./docs/monitoring-testing/testing-nextjs.md) — Server Components, Server Actions, Route Handlers.
+- [Визуальное тестирование](./docs/monitoring-testing/testing-visual-regression.md) — Chromatic, Percy, snapshots.
+- [Тестирование производительности](./docs/monitoring-testing/testing-performance.md) — Lighthouse CI, Web Vitals, k6.
 
 ### Производительность
 - [React Compiler](https://react.dev/learn/react-compiler) — стабилен с 2025 года.
