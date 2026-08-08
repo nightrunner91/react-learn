@@ -1212,7 +1212,7 @@ Sentry — платформа мониторинга ошибок и произ�
 - **Releases** — какие ошибки появились в новых версиях
 - **User impact** — сколько пользователей затронуто
 
-Без мониторинга вы узнаёте о проблемах из жалоб пользователей — часто слишком поздно. (Подробнее: [Sentry](./docs/monitoring-testing/sentry_monitoring.md))
+Без мониторинга вы узнаёте о проблемах из жалоб пользователей — часто слишком поздно. (Подробнее: [Sentry](./docs/monitoring-testing/sentry-guide.md))
 
 **В75. Как настроить Sentry в Next.js?**
 
@@ -1220,7 +1220,7 @@ Sentry — платформа мониторинга ошибок и произ�
 npx @sentry/wizard@latest -i nextjs
 ```
 
-Wizard автоматически создаст `sentry.client.config.js`, `sentry.server.config.js`, `sentry.edge.config.js` и настроит `next.config.js` с `withSentryConfig`. Ключевые параметры: `tracesSampleRate` (performance), `replaysSessionSampleRate` (Session Replay), `release` (версия приложения). (Подробнее: [Установка Sentry](./docs/monitoring-testing/sentry_monitoring.md#установка-и-настройка))
+Wizard автоматически создаст `sentry.client.config.js`, `sentry.server.config.js`, `sentry.edge.config.js` и настроит `next.config.js` с `withSentryConfig`. Ключевые параметры: `tracesSampleRate` (performance), `replaysSessionSampleRate` (Session Replay), `release` (версия приложения). (Подробнее: [Установка Sentry](./docs/monitoring-testing/sentry-guide.md#установка-и-настройка))
 
 ---
 
