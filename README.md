@@ -40,6 +40,7 @@
 36. [Визуальное и регрессионное тестирование](./docs/monitoring-testing/testing-visual-regression.md)
 37. [Тестирование производительности](./docs/monitoring-testing/testing-performance.md)
 38. [Дополнительные ресурсы](#дополнительные-ресурсы)
+39. [Алгоритмическая сложность и Big O](./docs/algorithms/big-o-notation.md)
 
 ---
 
@@ -1343,6 +1344,11 @@ LLM (ChatGPT, Claude, Copilot, Cursor) помогают:
 - [react.dev — Learn React](https://react.dev/learn) — официальный интерактивный туториал.
 - [Josh W Comeau's Blog](https://www.joshwcomeau.com) — глубокие статьи по React.
 - [TkDodo's Blog](https://tkdodo.eu/blog) — продвинутые хуки и паттерны TanStack Query.
+
+### Алгоритмы и структуры данных
+- [Алгоритмическая сложность и Big O](./docs/algorithms/big-o-notation.md) — гайд для фронтендера: типы сложностей, примеры кода, задачи с собеседований.
+- [LeetCode](https://leetcode.com/) — задачи с фильтрацией по сложности.
+- [NeetCode 150](https://neetcode.io/) — 150 задач, покрывающих все основные паттерны.
 
 ### Архитектура и паттерны
 - [Feature-Sliced Design](https://feature-sliced.design) — методология структуры файлов.
