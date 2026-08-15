@@ -41,6 +41,11 @@
 37. [Тестирование производительности](./docs/monitoring-testing/testing-performance.md)
 38. [Дополнительные ресурсы](#дополнительные-ресурсы)
 39. [Алгоритмическая сложность и Big O](./docs/algorithms/big-o-notation.md)
+40. [JavaScript Core — глубокое понимание](./docs/javascript/js-core.md)
+41. [Сборка и CI/CD — от бандлеров до автоматизации деплоя](./docs/build-tools/build-tools-ci-cd.md)
+42. [Монорепозитории — Turborepo, Nx и управление большими проектами](./docs/build-tools/monorepos.md)
+43. [Продвинутая оптимизация бандла — от анализа до реальных результатов](./docs/build-tools/advanced-bundle-optimization.md)
+44. [Стратегии деплоя — blue-green, canary releases, feature flags](./docs/build-tools/deployment-strategies.md)
 
 ---
 
@@ -1344,6 +1349,15 @@ LLM (ChatGPT, Claude, Copilot, Cursor) помогают:
 - [react.dev — Learn React](https://react.dev/learn) — официальный интерактивный туториал.
 - [Josh W Comeau's Blog](https://www.joshwcomeau.com) — глубокие статьи по React.
 - [TkDodo's Blog](https://tkdodo.eu/blog) — продвинутые хуки и паттерны TanStack Query.
+
+### JavaScript Core
+- [JavaScript Core — глубокое понимание](./docs/javascript/js-core.md) — замыкания, Event Loop, прототипы, `this`, hoisting, типы данных. Всё, что спрашивают на собеседованиях.
+
+### Сборка и CI/CD
+- [Сборка и CI/CD](./docs/build-tools/build-tools-ci-cd.md) — бандлеры (Webpack, Vite), code splitting, tree shaking, GitHub Actions, Docker, preview deployments.
+- [Монорепозитории](./docs/build-tools/monorepos.md) — Turborepo, Nx, workspace'ы, структура, зависимости, CI/CD для монорепозиториев.
+- [Продвинутая оптимизация бандла](./docs/build-tools/advanced-bundle-optimization.md) — анализ бандла, tree shaking, code splitting, vendor chunks, дубликаты, сжатие, бюджеты.
+- [Стратегии деплоя](./docs/build-tools/deployment-strategies.md) — blue-green deployment, canary releases, feature flags, rollback strategies, zero-downtime.
 
 ### Алгоритмы и структуры данных
 - [Алгоритмическая сложность и Big O](./docs/algorithms/big-o-notation.md) — гайд для фронтендера: типы сложностей, примеры кода, задачи с собеседований.
