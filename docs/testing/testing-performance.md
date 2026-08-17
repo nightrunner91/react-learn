@@ -638,6 +638,76 @@ it("memoizes component correctly", () => {
 
 ---
 
+## Профилирование Vue-компонентов
+
+### Vue DevTools Profiler
+
+Vue DevTools — основной инструмент для анализа производительности Vue-приложений. Он показывает время рендера компонентов, количество ререндеров и зависимости реактивных данных. В тестах DevTools недоступен, но можно измерить время рендера программно через `performance.now` или через хук `onRenderTracked`.
+
+### Измерение времени рендера
+
+Для автоматизации проверок можно обернуть рендер компонента в `performance.now()`. Это даёт грубую оценку времени рендера — достаточную для обнаружения регрессий.
+
+```ts
+import { mount } from "@vue/test-utils";
+import ExpensiveList from "./ExpensiveList.vue";
+
+it("renders list efficiently", () => {
+  const items = Array.from({ length: 1000 }, (_, i) => ({ id: i, name: `Item ${i}` }));
+
+  const start = performance.now();
+  const wrapper = mount(ExpensiveList, {
+    props: { items },
+  });
+  const duration = performance.now() - start;
+
+  expect(wrapper.findAll("li")).toHaveLength(1000);
+  expect(duration).toBeLessThan(100); // Менее 100мс
+});
+```
+
+### Тестирование мемоизации
+
+Vue предоставляет `computed`, `watch` и `shallowRef` для оптимизации реактивности. Для проверки того, что компонент не ререндерится лишний раз, можно отслеживать количество вызовов `onUpdated`.
+
+```vue
+<!-- MemoizedCounter.vue -->
+<template>
+  <div>{{ count }}</div>
+</template>
+
+<script setup>
+import { ref, onUpdated } from "vue";
+
+const props = defineProps({ value: Number });
+const count = ref(0);
+
+onUpdated(() => {
+  count.value++;
+});
+</script>
+```
+
+```ts
+it("does not rerender when props do not change", async () => {
+  const wrapper = mount(MemoizedCounter, {
+    props: { value: 1 },
+  });
+
+  // Первый рендер
+  expect(wrapper.vm.count).toBe(0);
+
+  // Ререндер с теми же пропсами
+  await wrapper.setProps({ value: 1 });
+
+  expect(wrapper.vm.count).toBe(0);
+});
+```
+
+> ⚠️ Тестирование через `wrapper.vm` допустимо при проверке производительности, но избегайте завязывать тесты на внутреннее состояние в обычных сценариях.
+
+---
+
 ## Тестирование времени выполнения
 
 Тестирование времени выполнения (timing tests) проверяет, что функции укладываются в разумные сроки. Это не замена профилированию — timing тесты ловят грубые регрессии (O(n^2) вместо O(n)), а не микрооптимизации. Порог должен быть щедрым (100мс вместо реальных 5мс), иначе тесты будут flaky на медленных CI-машинах.

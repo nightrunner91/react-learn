@@ -259,8 +259,10 @@ Next.js — основной full-stack фреймворк для React. Сер�
 - [ ] Что такое Lighthouse CI и как тестировать производительность в CI/CD
 - [ ] Что такое Sentry и как интегрировать мониторинг ошибок в React/Next.js
 - [ ] Что такое Spec-Driven Development и чем он отличается от классического TDD
+- [ ] Как тестировать Vue-компоненты с Vue Test Utils
+- [ ] Как тестировать Nuxt 3: компоненты, composables, server routes, middleware
 
-[Основы тестирования](./docs/testing/testing-fundamentals.md) · [Vitest](./docs/testing/testing-vitest.md) · [React-компоненты](./docs/testing/testing-react-components.md) · [Мокирование](./docs/testing/testing-mocking.md) · [Playwright](./docs/testing/testing-e2e-playwright.md) · [Тестирование Next.js](./docs/testing/testing-nextjs.md) · [Визуальное тестирование](./docs/testing/testing-visual-regression.md) · [Тестирование производительности](./docs/testing/testing-performance.md) · [Sentry](./docs/testing/sentry-guide.md) · [Spec-Driven Development](./docs/testing/spec-driven-development.md)
+[Основы тестирования](./docs/testing/testing-fundamentals.md) · [Vitest](./docs/testing/testing-vitest.md) · [React-компоненты](./docs/testing/testing-react-components.md) · [Vue-компоненты](./docs/testing/testing-vue-components.md) · [Мокирование](./docs/testing/testing-mocking.md) · [Playwright](./docs/testing/testing-e2e-playwright.md) · [Тестирование Next.js](./docs/testing/testing-nextjs.md) · [Тестирование Nuxt](./docs/testing/testing-nuxt.md) · [Визуальное тестирование](./docs/testing/testing-visual-regression.md) · [Тестирование производительности](./docs/testing/testing-performance.md) · [Sentry](./docs/testing/sentry-guide.md) · [Spec-Driven Development](./docs/testing/spec-driven-development.md)
 
 ---
 

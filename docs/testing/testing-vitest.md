@@ -1107,9 +1107,9 @@ All files  |   82.60 |    71.42 |   86.36 |   82.60 |
 
 ---
 
-## Конфигурация для React и Next.js
+## Конфигурация для React, Next.js, Vue и Nuxt
 
-React и Next.js требуют специфичной настройки тестового окружения: эмуляция DOM, JSX-трансформация, мокирование фреймворк-специфичных API. Без `jsdom` тесты не смогут рендерить компоненты — в Node.js нет `document`. Без `@vitejs/plugin-react` Vitest не поймёт JSX-синтаксис.
+Каждый фреймворк требует специфичной настройки тестового окружения: эмуляция DOM, трансформация компонентов, мокирование фреймворк-специфичных API. Без `jsdom` тесты не смогут рендерить компоненты — в Node.js нет `document`. Без соответствующего Vite-плагина Vitest не поймёт `.jsx`, `.tsx` или `.vue` файлы.
 
 ### React + Vite
 
@@ -1188,6 +1188,58 @@ vi.mock("next/link", () => ({
     `<a href="${href}">${children}</a>`,
 }));
 ```
+
+### Vue + Vite
+
+Для Vue используется `@vitejs/plugin-vue`. Он компилирует однофайловые компоненты (`.vue`) для Vitest. Окружение `jsdom` или `happy-dom` эмулирует браузерный DOM.
+
+```ts
+// vitest.config.ts
+import { defineConfig } from "vitest/config";
+import vue from "@vitejs/plugin-vue";
+
+export default defineConfig({
+  plugins: [vue()],
+  test: {
+    environment: "jsdom",
+    globals: true,
+  },
+});
+```
+
+```ts
+// src/test/setup.ts
+import { cleanup } from "@vue/test-utils";
+import { afterEach, vi } from "vitest";
+
+afterEach(() => {
+  cleanup();
+  vi.clearAllMocks();
+});
+```
+
+### Nuxt 3
+
+Nuxt 3 имеет официальный модуль `@nuxt/test-utils/module`, который автоматически настраивает Vitest: auto-imports, `.vue` файлы, runtime config, серверные маршруты.
+
+```ts
+// vitest.config.ts
+import { defineVitestConfig } from "@nuxt/test-utils/config";
+
+export default defineVitestConfig({
+  test: {
+    environment: "nuxt",
+    globals: true,
+    environmentOptions: {
+      nuxt: {
+        domEnvironment: "happy-dom",
+      },
+    },
+  },
+});
+```
+
+> 💡 `environment: "nuxt"` — специальное окружение от `@nuxt/test-utils`. Оно эмулирует Nuxt-рантайм и отличается от обычного `jsdom` для Vue.
 
 ---
 
