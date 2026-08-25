@@ -227,18 +227,54 @@ Next.js — основной full-stack фреймворк для React. Сер�
 
 ## 12. Безопасность
 
-Фронтенд — точка входа для большинства атак. XSS, CSRF, утечки секретов — всё это реальные угрозы, которые спрашивают на собеседованиях.
+Фронтенд — точка входа для большинства атак. XSS, CSRF, утечки секретов — всё это реальные угрозы, которые спрашивают на собеседованиях. Для компаний, готовящихся к SOC2 и CASA, важно не только писать безопасный код, но и понимать процессы: управление зависимостями, access reviews, change management, incident response.
 
-- [ ] Что такое XSS (Cross-Site Scripting) — какие виды существуют (отражённый, хранимый, DOM-based)
-- [ ] Как защититься от XSS: экранирование, Content Security Policy, HttpOnly cookies
-- [ ] Что такое CSRF (Cross-Site Request Forgery) и как от него защититься (CSRF-токены, SameSite cookies)
-- [ ] Что такое Content Security Policy (CSP) и как она работает
-- [ ] Почему нельзя хранить секреты (API-ключи, токены) в клиентском коде
-- [ ] Какие HTTP-заголовки безопасности нужно знать (X-Frame-Options, HSTS, X-Content-Type-Options)
-- [ ] Какие особенности безопасности Server Actions в React 19 (CVE-2025-55182)
-- [ ] Что такое безопасность зависимостей и как проверять `node_modules`
+### Базовые угрозы и защита
 
-[Безопасность](./docs/security/security.md)
+- [ ] Что такое XSS (Cross-Site Scripting) — какие виды существуют (reflected, stored, DOM-based, mutation, blind)
+- [ ] Как React, Vue, Nuxt и Next.js защищают от XSS по умолчанию и где их защита заканчивается
+- [ ] Чем экранирование отличается от санитизации и валидации
+- [ ] Что такое `dangerouslySetInnerHTML` и `v-html` и почему они опасны
+- [ ] Что такое CSRF (Cross-Site Request Forgery) — механика атаки и почему она работает даже с JSON API
+- [ ] Как SameSite cookies защищают от CSRF и чем отличаются `Strict`, `Lax` и `None`
+- [ ] Что такое CSRF-токены и double submit cookie pattern
+- [ ] Что такое Content Security Policy (CSP), её основные директивы и режим Report-Only
+- [ ] Что такое nonce-based CSP и `strict-dynamic`
+- [ ] Какие HTTP security-заголовки нужно знать: HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, COOP, COEP, CORP
+
+### Аутентификация, авторизация и секреты
+
+- [ ] Чем аутентификация отличается от авторизации
+- [ ] Сессии через cookies vs JWT: плюсы, минусы, риски
+- [ ] Access token и refresh token: зачем нужна пара и что такое token rotation
+- [ ] OAuth 2.0, OpenID Connect и PKCE: для чего нужны и как работают
+- [ ] Где хранить токены: cookies, localStorage, memory — trade-offs
+- [ ] Что такое RBAC и ABAC
+- [ ] Почему нельзя хранить секреты (API-ключи, приватные ключи) в клиентском коде
+- [ ] Как `NEXT_PUBLIC_` и `runtimeConfig.public` влияют на утечку секретов
+- [ ] Как правильно организовать серверный прокси для внешних API
+
+### Фреймворки и зависимости
+
+- [ ] Какие особенности безопасности Server Actions в Next.js и как их правильно валидировать
+- [ ] Как Next.js разделяет Server Components и Client Components и почему это важно для безопасности
+- [ ] Как защитить Nuxt server routes и работать с `runtimeConfig`
+- [ ] Что такое supply chain attack и известные инциденты (ua-parser-js, colors, event-stream)
+- [ ] Как работает `npm audit`, зачем нужны lock-файлы
+- [ ] Что такое SBOM, provenance и reproducible builds
+- [ ] Какие инструменты мониторинга зависимостей существуют (Snyk, Socket, Dependabot)
+
+### Compliance и рабочие процессы
+
+- [ ] Что такое SOC2 и CASA и почему они важны для фронтенда
+- [ ] Что такое controls, evidence, audit trail, findings, remediation
+- [ ] Какие security controls SOC2 касаются фронтенда (CC6.1, CC6.6, CC7.1 и др.)
+- [ ] Что такое access review и change management
+- [ ] Как фронтенд-разработчик участвует в incident response
+- [ ] Что такое pentest и как к нему подготовиться
+- [ ] Что такое Secure SDLC и threat modeling
+
+[Безопасность веб-приложений](./docs/security/security.md) · [XSS](./docs/security/security-xss-deep-dive.md) · [CSRF](./docs/security/security-csrf-deep-dive.md) · [CSP](./docs/security/security-csp-deep-dive.md) · [HTTP-заголовки](./docs/security/security-http-headers.md) · [Аутентификация и авторизация](./docs/security/security-authn-authz.md) · [Секреты](./docs/security/security-secrets-management.md) · [Next.js](./docs/security/security-nextjs.md) · [Vue/Nuxt](./docs/security/security-vue-nuxt.md) · [Зависимости](./docs/security/security-dependency-supply-chain.md) · [SOC2 и CASA](./docs/security/security-soc2-casa-workflows.md)
 
 ---
 
