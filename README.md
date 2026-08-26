@@ -317,8 +317,19 @@ Next.js — основной full-stack фреймворк для React. Сер�
 - [ ] Что такое Blue-Green Deployment, Canary Releases и Feature Flags
 - [ ] Что такое zero-downtime deployment и rollback strategies
 - [ ] Что такое Preview Deployments (деплой каждого PR)
+- [ ] Чем CSR, SSR, SSG и ISR отличаются друг от друга и когда какой применять
+- [ ] Что такое CDN и как она ускоряет доставку контента
+- [ ] Что такое Edge Functions и Edge Runtime — плюсы, минусы и ограничения
+- [ ] Какие HTTP-заголовки кэширования нужно знать: `Cache-Control`, `s-maxage`, `stale-while-revalidate`
+- [ ] Как задеплоить Next.js: `output: 'export'`, `output: 'standalone'`, Vercel, Docker
+- [ ] Что такое `NEXT_PUBLIC_` и почему секреты нельзя выносить на клиент
+- [ ] Как задеплоить Nuxt 3: `nuxt build`, `nuxt generate`, Nitro presets, `routeRules`
+- [ ] Что такое runtime config в Nuxt и чем он отличается от `NEXT_PUBLIC_`
+- [ ] В чём разница между Vercel, Netlify, Railway, Render, Fly.io и Cloudflare
+- [ ] Когда выбрать serverless, а когда контейнеры
+- [ ] Как организовать SSG + CDN + Edge Functions в одной архитектуре
 
-[Сборка и CI/CD](./docs/build-tools/build-tools-ci-cd.md) · [Монорепозитории](./docs/build-tools/monorepos.md) · [Оптимизация бандла](./docs/build-tools/advanced-bundle-optimization.md) · [Стратегии деплоя](./docs/build-tools/deployment-strategies.md)
+[Сборка и CI/CD](./docs/build-and-deployment/build-tools-ci-cd.md) · [Стратегии рендеринга](./docs/build-and-deployment/deployment-rendering-strategies.md) · [Деплой Next.js](./docs/build-and-deployment/deployment-nextjs.md) · [Деплой Nuxt 3](./docs/build-and-deployment/deployment-nuxt.md) · [Платформы деплоя](./docs/build-and-deployment/deployment-platforms.md) · [Монорепозитории](./docs/build-and-deployment/monorepos.md) · [Оптимизация бандла](./docs/build-and-deployment/advanced-bundle-optimization.md) · [Стратегии деплоя](./docs/build-and-deployment/deployment-strategies.md)
 
 ---
 
