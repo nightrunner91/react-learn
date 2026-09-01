@@ -159,10 +159,132 @@ function submitForm(data: FormData) {
 }
 ```
 
+## Assertion functions (`asserts`)
+
+Помимо `value is Type`, есть функции-утверждения, которые выбрасывают ошибку при неудаче:
+
+```ts
+function assertIsUser(obj: unknown): asserts obj is User {
+  if (
+    typeof obj !== "object" ||
+    obj === null ||
+    typeof (obj as any).name !== "string" ||
+    typeof (obj as any).age !== "number"
+  ) {
+    throw new Error("Value is not a User");
+  }
+}
+
+const data: unknown = fetchUser();
+assertIsUser(data);
+// ✅ data: User
+console.log(data.name);
+```
+
+Отличие от обычного type guard: assert-функция не возвращает `boolean`, а либо успешно сужает тип, либо бросает исключение.
+
+## TypeScript-сужения без пользовательских guard
+
+### `typeof` narrowing
+
+```ts
+function format(value: string | number) {
+  if (typeof value === "string") {
+    return value.trim(); // ✅ string
+  }
+  return value.toFixed(2); // ✅ number
+}
+```
+
+### `instanceof` narrowing
+
+```ts
+function logError(err: Error | string) {
+  if (err instanceof Error) {
+    console.error(err.message); // ✅ Error
+  } else {
+    console.error(err); // ✅ string
+  }
+}
+```
+
+### `in` operator narrowing
+
+```ts
+type Cat = { meow: () => void };
+type Dog = { bark: () => void };
+
+function makeSound(animal: Cat | Dog) {
+  if ("meow" in animal) {
+    animal.meow(); // ✅ Cat
+  } else {
+    animal.bark(); // ✅ Dog
+  }
+}
+```
+
+### Исчерпывающая проверка (exhaustiveness check)
+
+```ts
+type Shape =
+  | { kind: "circle"; radius: number }
+  | { kind: "square"; side: number };
+
+function area(shape: Shape): number {
+  switch (shape.kind) {
+    case "circle":
+      return Math.PI * shape.radius ** 2;
+    case "square":
+      return shape.side ** 2;
+    default:
+      // Если добавится новый вариант, TS выдаст ошибку
+      const _exhaustive: never = shape;
+      return _exhaustive;
+  }
+}
+```
+
+## TypeGuard с массивами
+
+```ts
+const values: unknown[] = fetchMixedData();
+
+const users = values.filter(isUser);
+// ✅ users: User[]
+
+const firstUser = values.find(isUser);
+// ✅ firstUser: User | undefined
+```
+
+## Когда guard недостаточен: библиотеки валидации
+
+Для сложных API-ответов ручные guard быстро становятся хрупкими. В таких случаях используют runtime-валидаторы:
+
+- **Zod** — самый популярный выбор.
+- **Valibot** — лёгкая альтернатива.
+- **io-ts** — функциональный подход.
+
+```ts
+import { z } from "zod";
+
+const UserSchema = z.object({
+  name: z.string(),
+  age: z.number(),
+});
+
+type User = z.infer<typeof UserSchema>;
+
+const data: unknown = await fetchUser();
+const user = UserSchema.parse(data); // ✅ user: User
+```
+
 ## Ключевые моменты
 
-- **`value is Type`** — предикат типа, сообщает компилятору о сужении
-- Работают с `if`, `while`, тернарными операторами, `.filter()`, `.find()`
-- Без предиката TypeScript не сузит тип `unknown` до конкретного
-- Полезны для валидации данных из API, обработки `unknown`, discriminated unions
-- Предикат должен соответствовать реальной логике проверки, иначе возникнут баги
+- **`value is Type`** — предикат типа, сообщает компилятору о сужении.
+- **`asserts value is Type`** — функция-утверждение, либо сужает тип, либо бросает ошибку.
+- TypeScript сам сужает типы через `typeof`, `instanceof`, `in`, `switch` и discriminated unions.
+- Пользовательские guard работают с `if`, `while`, тернарными операторами, `.filter()`, `.find()`, `.some()`.
+- Без предиката TypeScript не сузит тип `unknown` до конкретного.
+- Полезны для валидации данных из API, обработки `unknown` и discriminated unions.
+- Предикат должен соответствовать реальной логике проверки, иначе возникнут баги.
+- Для сложных схем рассмотрите Zod / Valibot вместо ручных guard.
