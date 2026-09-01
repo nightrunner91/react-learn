@@ -153,55 +153,13 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
 ## Деплой SSR и ISR
 
-### SSR
+Сами стратегии рендеринга (CSR, SSR, SSG, ISR, RSC, PPR) подробно разобраны в [Методы рендеринга в Next.js](../performance/rendering-methods.md). Здесь — только deployment-аспекты.
 
-Для принудительного SSR на странице:
+### Что важно при деплое
 
-```tsx
-// app/page.tsx
-export const dynamic = 'force-dynamic'
-
-export default async function Page() {
-  const response = await fetch('https://api.example.com/data', {
-    cache: 'no-store',
-  })
-  const data = await response.json()
-
-  return <div>{data.title}</div>
-}
-```
-
-### ISR
-
-```tsx
-// app/page.tsx
-export const revalidate = 60
-
-export default async function Page() {
-  const response = await fetch('https://api.example.com/data', {
-    next: { revalidate: 60 },
-  })
-  const data = await response.json()
-
-  return <div>{data.title}</div>
-}
-```
-
-### On-Demand Revalidation
-
-```tsx
-// app/api/revalidate/route.ts
-import { revalidatePath, revalidateTag } from 'next/cache'
-
-export async function POST(request: Request) {
-  const { path, tag } = await request.json()
-
-  if (path) revalidatePath(path)
-  if (tag) revalidateTag(tag)
-
-  return Response.json({ revalidated: true })
-}
-```
+- **SSR** требует сервер или serverless-функции: страница рендерится при каждом запросе.
+- **ISR** требует платформу с поддержкой фоновой регенерации и кэширования.
+- **Static Export** (`output: 'export'`) не поддерживает SSR, ISR, API Routes и Middleware.
 
 ### Где работает ISR
 
