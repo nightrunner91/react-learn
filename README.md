@@ -98,6 +98,27 @@
 
 - [ ] Как устроен Event Loop: call stack, task queue, microtask queue — и в каком порядке они выполняются
 
+[Event Loop](./docs/javascript/js-event-loop.md)
+
+### Асинхронность: Promise, async/await
+
+- [ ] Что такое Promise и какие у него состояния
+- [ ] В чём разница между `Promise.all`, `Promise.race`, `Promise.allSettled` и `Promise.any`
+- [ ] Как работает `async/await` под капотом
+- [ ] Как обработать ошибку в асинхронном коде
+- [ ] Как отменить асинхронную операцию
+
+[Асинхронность: Promise, async/await](./docs/javascript/js-async.md)
+
+### Модули
+
+- [ ] Чем ES Modules отличаются от CommonJS
+- [ ] Как работают `import`/`export` и `require`/`module.exports`
+- [ ] Что такое циклические зависимости и как с ними бороться
+- [ ] Что такое tree shaking и side effects
+
+[Модули](./docs/javascript/js-modules.md)
+
 ### Продвинутые темы
 
 - [ ] Что такое Proxy и WeakMap — и когда их стоит применять

@@ -30,10 +30,10 @@
 - **[Контекст выполнения и `this`](./js-this.md)** — правила определения `this`, `call`/`apply`/`bind`, потеря контекста, стрелочные функции, `this` в классах и обработчиках событий React, практические задачи.
 - **[Прототипы и классы](./js-prototypes-classes.md)** — прототипное наследование, конструкторы и `prototype`, `class`, `extends`, приватные поля `#`, статические методы, `instanceof`, отличия от классов в Java/C++.
 - **[Event Loop](./js-event-loop.md)** — call stack, Web API, task и microtask queue, `setTimeout(fn, 0)`, `queueMicrotask`, `requestAnimationFrame`, render queue, `process.nextTick`, визуализация Event Loop.
+- **[Асинхронность: Promise, async/await](./js-async.md)** — состояния Promise, методы `Promise.all`/`race`/`allSettled`/`any`, `async/await`, последовательное и параллельное выполнение, обработка ошибок, `AbortController`.
+- **[Модули](./js-modules.md)** — ES Modules и CommonJS, `import`/`export`, `require`/`module.exports`, динамический импорт, циклические зависимости, tree shaking и side effects.
 
 ### В разработке
-- `js-async.md` — Асинхронность: Promise, async/await
-- `js-modules.md` — Модули
 - `js-collections-iterators.md` — Коллекции, итераторы, генераторы
 - `js-proxy-reflect.md` — Proxy и Reflect
 - `js-functional.md` — Функциональное программирование
