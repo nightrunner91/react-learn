@@ -32,10 +32,10 @@
 - **[Event Loop](./js-event-loop.md)** — call stack, Web API, task и microtask queue, `setTimeout(fn, 0)`, `queueMicrotask`, `requestAnimationFrame`, render queue, `process.nextTick`, визуализация Event Loop.
 - **[Асинхронность: Promise, async/await](./js-async.md)** — состояния Promise, методы `Promise.all`/`race`/`allSettled`/`any`, `async/await`, последовательное и параллельное выполнение, обработка ошибок, `AbortController`.
 - **[Модули](./js-modules.md)** — ES Modules и CommonJS, `import`/`export`, `require`/`module.exports`, динамический импорт, циклические зависимости, tree shaking и side effects.
+- **[Коллекции, итераторы, генераторы](./js-collections-iterators.md)** — `Map`, `Set`, `WeakMap`, `WeakSet`, разница с объектом, `Symbol.iterator`, `for...of`, spread, деструктуризация, генераторы `function*`.
+- **[Proxy и Reflect](./js-proxy-reflect.md)** — ловушки Proxy, `Reflect`, валидация, логирование, реактивность, ограничения Proxy, отзываемые прокси.
 
 ### В разработке
-- `js-collections-iterators.md` — Коллекции, итераторы, генераторы
-- `js-proxy-reflect.md` — Proxy и Reflect
 - `js-functional.md` — Функциональное программирование
 - `js-memory.md` — Память и производительность
 - `js-practice.md` — Практические задачи с разбором
