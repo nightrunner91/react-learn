@@ -34,10 +34,10 @@
 - **[Модули](./js-modules.md)** — ES Modules и CommonJS, `import`/`export`, `require`/`module.exports`, динамический импорт, циклические зависимости, tree shaking и side effects.
 - **[Коллекции, итераторы, генераторы](./js-collections-iterators.md)** — `Map`, `Set`, `WeakMap`, `WeakSet`, разница с объектом, `Symbol.iterator`, `for...of`, spread, деструктуризация, генераторы `function*`.
 - **[Proxy и Reflect](./js-proxy-reflect.md)** — ловушки Proxy, `Reflect`, валидация, логирование, реактивность, ограничения Proxy, отзываемые прокси.
+- **[Функциональное программирование](./js-functional.md)** — чистые функции, иммутабельность, методы массивов, каррирование, частичное применение, композиция, `debounce` и `throttle`, практические задачи.
+- **[Память и производительность](./js-memory.md)** — стек и куча, сборка мусора, типичные утечки памяти, `WeakRef` и `FinalizationRegistry`, инструменты DevTools, практические задачи.
 
 ### В разработке
-- `js-functional.md` — Функциональное программирование
-- `js-memory.md` — Память и производительность
 - `js-practice.md` — Практические задачи с разбором
 
 ## Как пользоваться
