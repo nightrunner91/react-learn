@@ -28,10 +28,10 @@
 - **[Область видимости и hoisting](./js-scope-hoisting.md)** — `var`/`let`/`const`, TDZ, лексическое окружение, hoisting функций и классов, практические примеры.
 - **[Замыкания](./js-closures.md)** — определение и работа под капотом, приватные переменные, каррирование, IIFE, модули как замыкания, stale closures в React, практические задачи.
 - **[Контекст выполнения и `this`](./js-this.md)** — правила определения `this`, `call`/`apply`/`bind`, потеря контекста, стрелочные функции, `this` в классах и обработчиках событий React, практические задачи.
+- **[Прототипы и классы](./js-prototypes-classes.md)** — прототипное наследование, конструкторы и `prototype`, `class`, `extends`, приватные поля `#`, статические методы, `instanceof`, отличия от классов в Java/C++.
+- **[Event Loop](./js-event-loop.md)** — call stack, Web API, task и microtask queue, `setTimeout(fn, 0)`, `queueMicrotask`, `requestAnimationFrame`, render queue, `process.nextTick`, визуализация Event Loop.
 
 ### В разработке
-- `js-prototypes-classes.md` — Прототипы и классы
-- `js-event-loop.md` — Event Loop
 - `js-async.md` — Асинхронность: Promise, async/await
 - `js-modules.md` — Модули
 - `js-collections-iterators.md` — Коллекции, итераторы, генераторы
