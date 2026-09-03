@@ -14,28 +14,27 @@
 
 Чтобы извлечь из максимум из этого репозитория, используй активные техники обучения, а не пассивное чтение.
 
-### Active Recall
+**Active Recall**
 
 Закрой статью и ответь на вопрос чеклиста вслух. Если не можешь — вернись к материалу, найди пробел и повтори.
 
-### Feynman Technique
+**Feynman Technique**
 
 Объясни тему простыми словами так, будто собеседник — джун. Если где-то запинаешься, значит, тема ещё не усвоена.
 
-### Spaced Repetition
+**Spaced Repetition**
 
 Повторяй сложные темы через 1, 3 и 7 дней. Не полагайся на однократное прочтение.
 
-### Мок-интервью
+**Мок-интервью**
 
 Отвечай на вопросы с таймером, записывай себя или проси друга/коллегу провести собеседование. Теория закрепляется только через устную практику.
 
-### Практика
+**Практика**
 
-- Решай 1–2 задачи на LeetCode/CodeWars в день (easy/medium).
-- Веди pet-проект на Next.js + TypeScript.
+Решай 1–2 задачи на LeetCode/CodeWars в день (easy/medium) и веди pet-проект на Next.js + TypeScript.
 
-### Трекер прогресса
+**Трекер прогресса**
 
 После каждого сеанса обучения отметь каждый пройденный пункт чеклиста (здесь либо в любом удобном месте, хоть на бумаге):
 
@@ -45,18 +44,7 @@
 
 Цель — довести все пункты до 🟢, не переходя к следующему разделу, пока в текущем нет минимум 80% зелёных.
 
-### Формат проверки одного пункта
-
-Для каждого вопроса попробуй ответить вслух на 6 пунктов:
-
-1. **Что это?** — одно-два предложения простым языком.
-2. **Зачем нужно?** — какую проблему решает.
-3. **Как работает под капотом?** — важно для Middle+.
-4. **Где применяется?** — реальный пример из практики.
-5. **Какие подводные камни?** — trade-offs, ограничения, ошибки.
-6. **Как написать код?** — минимальный рабочий пример, если применимо.
-
-### Рекомендуемый распорядок
+**Рекомендуемый распорядок**
 
 - 30-45 мин — теория: 3–5 новых вопросов из чеклиста + сверка со статьёй.
 - 10-15 мин — быстрое (блиц) повторение недавних тем (вчерашних и недельных).
@@ -164,7 +152,7 @@ TypeScript стал стандартом в React-разработке. На с�
 
 ## 5. Внутреннее устройство React
 
-Понимание того, что происходит «под капотом» — то, что отличает Middle от Junior. Fiber, согласование, конкурентный режим, мемоизация — всё это объясняет, *почему* React работает именно так.
+Понимание того, что происходит «под капотом» — то, что отличает Middle от Junior. Fiber, согласование, конкурентный режим, мемоизация — всё это объясняет, *почему* React работает именно так. Современные API React 19+ вроде Actions, `useActionState`, `useOptimistic`, `use()` и ref как проп дополняют эту картину, поэтому они рассматриваются здесь же.
 
 - [ ] Что такое Virtual DOM и как работает алгоритм согласования (reconciliation)
 - [ ] Что такое Fiber и какую проблему он решил (прерываемый рендеринг вместо синхронного)
@@ -180,29 +168,19 @@ TypeScript стал стандартом в React-разработке. На с�
 - [ ] Как хук `use()` разворачивает Promise и читает Context прямо в рендере
 - [ ] Что такое HOC (компоненты высшего порядка) и заменили ли их хуки
 - [ ] Что такое Error Boundary — что он ловит, а что нет, и почему хуки не могут его заменить
-
-[Fiber](./docs/react/react_fiber.md) · [Suspense](./docs/react/react_suspense.md) · [useTransition и useDeferredValue](./docs/react/react_concurrent_hooks.md) · [Мемоизация](./docs/react/react_memorization.md) · [HOC](./docs/react/react_hoc.md) · [Error Boundary](./docs/react/react_errorboundary.md) · [Порядок рендеринга](./docs/react/react_rendering_order.md)
-
----
-
-## 6. React 19 и новые возможности
-
-React 19 принёс Actions, хук `use()`, ref как проп и другие изменения, которые меняют подход к разработке. На собеседовании всё чаще спрашивают именно про новые возможности.
-
 - [ ] Что такое Actions (Действия) и как работает `<form action={...}>`
 - [ ] Как работает `useActionState` — управление состоянием, pending и ошибкой действия
 - [ ] Что такое `useOptimistic` и как делать оптимистичные обновления UI
 - [ ] Чем `use()` отличается от `useContext()` и `useEffect` + `useState`
-- [ ] Что изменилось с ref в React 19 (ref как проп, без `forwardRef`)
-- [ ] Что добавил React 19.1: Owner Stack (`captureOwnerStack`), улучшенный Suspense
-- [ ] Что добавил React 19.2: `<Activity />`, `useEffectEvent`, `cacheSignal`, Performance Tracks
+- [ ] Что такое Owner Stack (`captureOwnerStack`) и как он работает
+- [ ] Что такое `<Activity />`, `useEffectEvent`, `cacheSignal`, Performance Tracks
 - [ ] Что такое Partial Pre-rendering и как он работает
 
-[React 19 в основном README](./README.md) · [Suspense](./docs/react/react_suspense.md) · [Хук use()](./docs/react/react_use.md)
+[Fiber](./docs/react/react_fiber.md) · [Suspense](./docs/react/react_suspense.md) · [useTransition и useDeferredValue](./docs/react/react_concurrent_hooks.md) · [Мемоизация](./docs/react/react_memorization.md) · [HOC](./docs/react/react_hoc.md) · [Error Boundary](./docs/react/react_errorboundary.md) · [Порядок рендеринга](./docs/react/react_rendering_order.md) · [Хук use()](./docs/react/react_use.md)
 
 ---
 
-## 7. Хранение данных и управление состоянием
+## 6. Хранение данных и управление состоянием
 
 Когда данных становится больше, чем может вместить один компонент, нужны инструменты для глобального состояния и клиентского хранения. Разберись, когда что применять.
 
@@ -221,7 +199,7 @@ React 19 принёс Actions, хук `use()`, ref как проп и други
 
 ---
 
-## 8. API и коммуникация
+## 7. API и коммуникация
 
 Фронтенд не живёт в вакууме — он постоянно общается с бэкендом. Нужно понимать, какие протоколы и подходы существуют, и когда какой применять.
 
@@ -237,7 +215,7 @@ React 19 принёс Actions, хук `use()`, ref как проп и други
 
 ---
 
-## 9. Архитектура и паттерны проектирования
+## 8. Архитектура и паттерны проектирования
 
 На уровне Middle+ спрашивают не «как написать компонент», а «как организовать приложение». Паттерны, принципы, структура файлов — всё это показывает, что ты мыслишь как инженер, а не как кодер.
 
@@ -254,7 +232,7 @@ React 19 принёс Actions, хук `use()`, ref как проп и други
 
 ---
 
-## 10. Next.js
+## 9. Next.js
 
 Next.js — основной full-stack фреймворк для React. Серверные компоненты, файловая маршрутизация, кэширование, Server Actions — всё это нужно знать.
 
@@ -277,7 +255,7 @@ Next.js — основной full-stack фреймворк для React. Сер�
 
 ---
 
-## 11. Производительность
+## 10. Производительность
 
 Быстрый сайт — это не бонус, а требование. Core Web Vitals влияют на SEO и конверсию. Нужно понимать, что замедляет приложение и как это измерить.
 
@@ -295,11 +273,9 @@ Next.js — основной full-stack фреймворк для React. Сер�
 
 ---
 
-## 12. Безопасность
+## 11. Безопасность
 
 Фронтенд — точка входа для большинства атак. XSS, CSRF, утечки секретов — всё это реальные угрозы, которые спрашивают на собеседованиях. Для компаний, готовящихся к SOC2 и CASA, важно не только писать безопасный код, но и понимать процессы: управление зависимостями, access reviews, change management, incident response.
-
-### Базовые угрозы и защита
 
 - [ ] Что такое XSS (Cross-Site Scripting) — какие виды существуют (reflected, stored, DOM-based, mutation, blind)
 - [ ] Как React, Vue, Nuxt и Next.js защищают от XSS по умолчанию и где их защита заканчивается
@@ -307,48 +283,29 @@ Next.js — основной full-stack фреймворк для React. Сер�
 - [ ] Что такое `dangerouslySetInnerHTML` и `v-html` и почему они опасны
 - [ ] Что такое CSRF (Cross-Site Request Forgery) — механика атаки и почему она работает даже с JSON API
 - [ ] Как SameSite cookies защищают от CSRF и чем отличаются `Strict`, `Lax` и `None`
-- [ ] Что такое CSRF-токены и double submit cookie pattern
 - [ ] Что такое Content Security Policy (CSP), её основные директивы и режим Report-Only
-- [ ] Что такое nonce-based CSP и `strict-dynamic`
 - [ ] Какие HTTP security-заголовки нужно знать: HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, COOP, COEP, CORP
-
-### Аутентификация, авторизация и секреты
-
 - [ ] Чем аутентификация отличается от авторизации
 - [ ] Сессии через cookies vs JWT: плюсы, минусы, риски
 - [ ] Access token и refresh token: зачем нужна пара и что такое token rotation
 - [ ] OAuth 2.0, OpenID Connect и PKCE: для чего нужны и как работают
 - [ ] Где хранить токены: cookies, localStorage, memory — trade-offs
-- [ ] Что такое RBAC и ABAC
 - [ ] Почему нельзя хранить секреты (API-ключи, приватные ключи) в клиентском коде
 - [ ] Как `NEXT_PUBLIC_` и `runtimeConfig.public` влияют на утечку секретов
-- [ ] Как правильно организовать серверный прокси для внешних API
-
-### Фреймворки и зависимости
-
 - [ ] Какие особенности безопасности Server Actions в Next.js и как их правильно валидировать
 - [ ] Как Next.js разделяет Server Components и Client Components и почему это важно для безопасности
-- [ ] Как защитить Nuxt server routes и работать с `runtimeConfig`
 - [ ] Что такое supply chain attack и известные инциденты (ua-parser-js, colors, event-stream)
 - [ ] Как работает `npm audit`, зачем нужны lock-файлы
-- [ ] Что такое SBOM, provenance и reproducible builds
-- [ ] Какие инструменты мониторинга зависимостей существуют (Snyk, Socket, Dependabot)
-
-### Compliance и рабочие процессы
-
 - [ ] Что такое SOC2 и CASA и почему они важны для фронтенда
-- [ ] Что такое controls, evidence, audit trail, findings, remediation
-- [ ] Какие security controls SOC2 касаются фронтенда (CC6.1, CC6.6, CC7.1 и др.)
 - [ ] Что такое access review и change management
 - [ ] Как фронтенд-разработчик участвует в incident response
-- [ ] Что такое pentest и как к нему подготовиться
 - [ ] Что такое Secure SDLC и threat modeling
 
 [Безопасность веб-приложений](./docs/security/security.md) · [XSS](./docs/security/security-xss-deep-dive.md) · [CSRF](./docs/security/security-csrf-deep-dive.md) · [CSP](./docs/security/security-csp-deep-dive.md) · [HTTP-заголовки](./docs/security/security-http-headers.md) · [Аутентификация и авторизация](./docs/security/security-authn-authz.md) · [Секреты](./docs/security/security-secrets-management.md) · [Next.js](./docs/security/security-nextjs.md) · [Vue/Nuxt](./docs/security/security-vue-nuxt.md) · [Зависимости](./docs/security/security-dependency-supply-chain.md) · [SOC2 и CASA](./docs/security/security-soc2-casa-workflows.md)
 
 ---
 
-## 13. Тестирование
+## 12. Тестирование
 
 Тесты — это не опция, а часть профессиональной разработки. Нужно понимать пирамиду тестирования, уметь писать unit-тесты, тестировать компоненты и E2E.
 
@@ -372,7 +329,7 @@ Next.js — основной full-stack фреймворк для React. Сер�
 
 ---
 
-## 14. Сборка, CI/CD и деплой
+## 13. Сборка, CI/CD и деплой
 
 Понимание того, что происходит между `npm run build` и production, показывает, что ты видишь картину целиком. Всё чаще спрашивают на Middle+ позициях.
 
@@ -403,9 +360,9 @@ Next.js — основной full-stack фреймворк для React. Сер�
 
 ---
 
-## 15. Платформы: React Native и PWA
+## 14. Платформы: React Native, PWA и Preact
 
-Расширение горизонтов за пределы веба. React Native позволяет писать мобильные приложения на React, а PWA — делать веб-приложения, работающие как нативные.
+Расширение горизонтов за пределы веба. React Native позволяет писать мобильные приложения на React, PWA — делать веб-приложения, работающие как нативные, а Preact — использовать лёгкий React-совместимый рантайм.
 
 - [ ] Что такое React Native и чем он отличается от React (нативные компоненты вместо DOM)
 - [ ] Что такое новая архитектура React Native (Fabric + TurboModules)
@@ -414,19 +371,9 @@ Next.js — основной full-stack фреймворк для React. Сер�
 - [ ] Что такое Service Workers и какие стратегии кэширования существуют
 - [ ] Как работают push-уведомления и Background Sync в PWA
 - [ ] Какие ограничения есть у PWA по сравнению с нативными приложениями
+- [ ] Что такое Preact и чем он отличается от React (размер бандла, нативные события, отсутствие Concurrent features)
+- [ ] Что такое Preact Signals и чем они отличаются от `useState`
 
-[React Native](./docs/platforms/react_native_intro.md) · [PWA](./docs/platforms/pwa.md)
+[React Native](./docs/platforms/react_native_intro.md) · [PWA](./docs/platforms/pwa.md) · [Preact](./docs/platforms/preact.md)
 
 ---
-
-## 16. React vs Vue — шпаргалка сравнений
-
-Если ты знаешь оба фреймворка или переходишь с одного на другой — полезно понимать, как концепции соотносятся.
-
-- [ ] Как соотносятся `ref()`/`reactive()` во Vue и `useState()` в React
-- [ ] Чем `computed()` во Vue отличается от `useMemo()` в React
-- [ ] Как `watch()`/`watchEffect()` во Vue соотносятся с `useEffect()` в React
-- [ ] Чем provide/inject во Vue отличается от Context API в React
-- [ ] Как соотносятся жизненные циклы Vue (`onMounted`, `onUpdated`, `onUnmounted`) и React-хуки
-
-[Шпаргалка Vue ↔ React](./docs/comparisons/vue-react-cheatsheet.md)
