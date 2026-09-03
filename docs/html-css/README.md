@@ -15,10 +15,10 @@
 
 | # | Файл | Тема | Статус |
 |---|------|------|--------|
-| 1 | `html-rendering-pipeline.md` | Парсинг HTML, критический путь рендеринга, DOM/CSSOM/Render Tree, Layout/Paint/Composite | 🚧 запланировано |
-| 2 | `html-semantics-accessibility.md` | Семантический HTML, landmarks, default ARIA roles, доступность | 🚧 запланировано |
-| 3 | `html-forms-validation.md` | Формы, Constraint Validation API, `ElementInternals`, custom elements | 🚧 запланировано |
-| 4 | `html-web-components.md` | Custom elements, Shadow DOM, slots, lifecycle callbacks | 🚧 запланировано |
+| 1 | `html-rendering-pipeline.md` | Парсинг HTML, критический путь рендеринга, DOM/CSSOM/Render Tree, Layout/Paint/Composite | ✅ готово |
+| 2 | `html-semantics-accessibility.md` | Семантический HTML, landmarks, default ARIA roles, доступность | ✅ готово |
+| 3 | `html-forms-validation.md` | Формы, Constraint Validation API, `ElementInternals`, custom elements | ✅ готово |
+| 4 | `html-web-components.md` | Custom elements, Shadow DOM, slots, lifecycle callbacks | ✅ готово |
 | 5 | `css-cascade-specificity.md` | Cascade, origin, `@layer`, specificity, inheritance, `!important` | 🚧 запланировано |
 | 6 | `css-layout-formatting-contexts.md` | BFC/IFC/FFC/GFC, containing block, margin collapse, box-sizing | 🚧 запланировано |
 | 7 | `css-flexbox.md` | Flexbox в глубину: оси, `flex-basis`, grow/shrink, alignment | 🚧 запланировано |
@@ -79,13 +79,6 @@
 # Название темы
 
 Краткое вступление в 2–3 предложения: зачем эта тема и что читатель вынесет.
-
-## Вопросы для самопроверки
-
-Перед чтением попробуй ответить:
-
-- Вопрос 1?
-- Вопрос 2?
 
 ## Глубокий разбор
 
