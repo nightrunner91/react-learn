@@ -19,8 +19,8 @@
 | 2 | `html-semantics-accessibility.md` | Семантический HTML, landmarks, default ARIA roles, доступность | ✅ готово |
 | 3 | `html-forms-validation.md` | Формы, Constraint Validation API, `ElementInternals`, custom elements | ✅ готово |
 | 4 | `html-web-components.md` | Custom elements, Shadow DOM, slots, lifecycle callbacks | ✅ готово |
-| 5 | `css-cascade-specificity.md` | Cascade, origin, `@layer`, specificity, inheritance, `!important` | 🚧 запланировано |
-| 6 | `css-layout-formatting-contexts.md` | BFC/IFC/FFC/GFC, containing block, margin collapse, box-sizing | 🚧 запланировано |
+| 5 | `css-cascade-specificity.md` | Cascade, origin, `@layer`, specificity, inheritance, `!important` | ✅ готово |
+| 6 | `css-layout-formatting-contexts.md` | BFC/IFC/FFC/GFC, containing block, margin collapse, box-sizing | ✅ готово |
 | 7 | `css-flexbox.md` | Flexbox в глубину: оси, `flex-basis`, grow/shrink, alignment | 🚧 запланировано |
 | 8 | `css-grid.md` | Grid: explicit/implicit, `fr`, `minmax`, `auto-fit`/`auto-fill`, subgrid | 🚧 запланировано |
 | 9 | `css-positioning-stacking.md` | Positioning, stacking context, z-index, paint order | 🚧 запланировано |
