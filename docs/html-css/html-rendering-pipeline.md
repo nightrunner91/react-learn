@@ -1,0 +1,194 @@
+# Парсинг HTML и критический путь рендеринга
+
+Эта статья разбирает, как браузер превращает скачанные байты в пиксели на экране. Понимание pipeline нужно не для того, чтобы заучивать термины, а чтобы объяснять, почему одни изменения тормозят страницу, а другие — почти бесплатны, и как оптимизировать первую отрисовку.
+
+## Глубокий разбор
+
+### От байтов к DOM: парсинг HTML
+
+Браузер получает от сервера поток байтов, преобразует их в символы по `Content-Type`/`charset`, затем токенизирует и строит дерево.
+
+1. **Tokenization.** HTML-парсер читает поток и выделяет токены: start tag, end tag, comment, character, DOCTYPE. Спецификация HTML живёт в режиме «исправляй ошибки»: незакрытые теги, неправильная вложенность, `<table>` внутри `<p>` — всё это разрешается по чётким правилам, а не ломает страницу.
+2. **Tree construction.** Токены превращаются в узлы DOM. Парсер поддерживает стек открытых элементов и при каждом токене решает: добавить ли узел, закрыть предыдущий, переместить элемент или создать "implied" элемент.
+3. **Speculative parsing / preload scanner.** Основной парсер синхронный: когда он встречает `<script>` без `defer`/`async`, он должен выполнить скрипт, прежде чем продолжить строить DOM. В это время отдельный лёгкий **preload scanner** бежит вперёд по сырому HTML и находит `<img>`, `<link rel="stylesheet">`, `@import`, `<script>` и другие ресурсы, чтобы запросить их заранее. Он не строит DOM и не выполняет JS, но позволяет не терять время на сетевые задержки.
+
+```html
+<!-- Скрипт без defer/async блокирует парсинг, но preload scanner всё равно найдёт изображение -->
+<script src="heavy.js"></script>
+<img src="hero.png" alt="">
+```
+
+### DOM, CSSOM, Render Tree
+
+**DOM (Document Object Model)** — дерево объектов, представляющее HTML-документ. К моменту окончания парсинга DOM может быть ещё не финальным: скрипты позже могут добавлять узлы, но браузер уже может рисовать.
+
+**CSSOM (CSS Object Model)** — дерево стилей. Оно строится из:
+- встроенных стилей браузера (user agent stylesheet);
+- внешних и внутренних `<style>`;
+- inline-стилей элементов.
+
+CSSOM не может быть частичным: браузер должен получить **весь** CSS, прежде чем строить Render Tree, потому что одно правило в конце файла может переопределить всё в начале.
+
+**Render Tree** — это DOM + CSSOM, отфильтрованный и обработанный:
+- исключены невидимые элементы (`<head>`, `<script>`, `display: none`, элементы с `visibility: hidden` — последние остаются в дереве, но не рисуются);
+- для каждого видимого узла вычислены стили (computed styles);
+- созданы box-ы, которые пойдут в layout.
+
+### Критический путь рендеринга
+
+Критический путь — это минимальная последовательность шагов, необходимых для первой отрисовки:
+
+```
+HTML → DOM
+        ↘
+         Render Tree → Layout → Paint → Composite
+        ↗
+CSS → CSSOM
+```
+
+Цель оптимизации: уменьшить количество и размер ресурсов на критическом пути, чтобы `First Contentful Paint` наступил раньше.
+
+Что влияет на критический путь:
+- синхронные скрипты в `<head>`;
+- блокирующие CSS (`<link rel="stylesheet">` в `<head>`);
+- шрифты с `font-display: block`;
+- тяжёлые изображения в первом экране.
+
+### Layout, Paint, Composite
+
+Это три фазы отрисовки после построения Render Tree.
+
+**Layout (Reflow)** — вычисление геометрии: где каждый box располагается, какие у него размеры, как переносятся строки. Layout затрагивает всё дерево или большую его часть: если изменить `width` у `body`, браузеру придётся пересчитать позиции почти всех потомков.
+
+Свойства, вызывающие layout:
+- `width`, `height`, `padding`, `margin`, `border`;
+- `top`, `left`, `right`, `bottom`;
+- `font-size`, `line-height`;
+- `display`, `position`.
+
+**Paint (Repaint)** — растрирование векторных примитивов в пиксели. Paint обычно происходит в нескольких слоях: фон, текст, рамки, тени. Если изменился только цвет или тень, layout не нужен, но paint — нужен.
+
+Свойства, вызывающие paint:
+- `color`, `background-color`;
+- `box-shadow`, `border-radius`;
+- `outline`, `text-decoration`.
+
+**Composite** — сборка готовых слоёв в финальную картинку. Эта фаза выполняется на GPU, если слои уже изолированы. Изменения, затрагивающие только composite, самые дешёвые.
+
+Свойства, вызывающие только composite:
+- `transform`;
+- `opacity`;
+- `filter` (в современных браузерах чаще всего composite-only).
+
+Браузер автоматически продвигает элементы в отдельные слои при анимации `transform`/`opacity`, при 3D-трансформациях, `will-change`, `<video>`, `<canvas>`, fixed-элементах. Но слои стоят памяти: чем их больше, тем выше накладные расходы.
+
+### Жизненный цикл изменения стилей
+
+Когда JS меняет стиль, браузер старается отложить пересчёт до конца текущего кадра. Но если скрипт читает геометрию (`offsetWidth`, `getBoundingClientRect`, `scrollTop`), браузер вынужден синхронно выполнить layout — это называется **forced synchronous layout**.
+
+```js
+// Плохо: чтение геометрии между записью стилей вынуждает layout
+const boxes = document.querySelectorAll('.box');
+boxes.forEach(box => {
+  box.style.width = '100px';        // записали стиль
+  console.log(box.offsetWidth);     // вынудили layout
+});
+```
+
+```js
+// Лучше: читать и писать отдельно
+const widths = Array.from(boxes).map(box => box.offsetWidth);
+boxes.forEach((box, i) => {
+  box.style.width = widths[i] + 'px';
+});
+```
+
+## Практические примеры
+
+### Пример 1: скрипт блокирует отрисовку
+
+```html
+<head>
+  <link rel="stylesheet" href="styles.css">
+  <script src="analytics.js"></script>
+</head>
+<body>
+  <h1>Hello</h1>
+</body>
+```
+
+Проблемы:
+- CSS блокирует Render Tree, пока не загрузится.
+- Скрипт без `defer`/`async` блокирует парсинг DOM.
+- Пока не выполнится скрипт, браузер не продолжит парсинг и не отрисует `<h1>`.
+
+Решение:
+
+```html
+<head>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Hello</h1>
+  <script src="analytics.js" defer></script>
+</body>
+```
+
+`defer` сохраняет порядок выполнения и запускается после полного парсинга DOM.
+
+### Пример 2: критический CSS
+
+```html
+<head>
+  <style>
+    /* inline-критический CSS для первого экрана */
+    body { margin: 0; font-family: system-ui; }
+    .hero { display: grid; place-items: center; min-height: 100vh; }
+  </style>
+  <link rel="preload" href="styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="styles.css"></noscript>
+</head>
+```
+
+Критический CSS встраивается inline, чтобы не ждать сети. Основной CSS загружается асинхронно. Это компромисс: первый рендер быстрее, но HTML становится больше.
+
+### Пример 3: анимация, которая не вызывает layout
+
+```css
+.card {
+  will-change: transform;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  opacity: 0.9;
+}
+```
+
+`transform` и `opacity` анимируются на этапе composite, не трогая layout и paint. Это самый производительный вид анимации.
+
+## Типичные ошибки и антипаттерны
+
+- **Скрипты в `<head>` без `defer`/`async`/`type="module"`.** Блокируют парсинг DOM и откладывают первую отрисовку. Исключение — скрипты, которые действительно нужны до рендера.
+- **Чтение `offsetWidth` в цикле после записи стилей.** Вынуждает браузер делать layout на каждой итерации. Сначала читай, потом пиши.
+- **Анимация `width`/`height`/`top`/`left`.** Вместо этого используй `transform`, если позволяет дизайн.
+- **`will-change` на всё подряд.** Создаёт лишние слои и жрёт память. Добавляй только перед анимацией и убирай после.
+- **Гигантские CSS-файлы на критическом пути.** Браузер не начнёт рендер, пока не получит весь CSS. Разделяй критический и некритический CSS.
+- **Игнорирование `font-display`.** `swap` показывает fallback-шрифт сразу, `block` блокирует текст до 3 секунд. Для контента первого экрана чаще выбирают `swap` или `optional`.
+
+## Ключевые тезисы для интервью
+
+- Парсер HTML синхронный, но preload scanner асинхронно находит ресурсы впереди, пока основной парсер заблокирован скриптом.
+- CSSOM строится только после получения всего CSS, поэтому `<link rel="stylesheet">` блокирует Render Tree.
+- Render Tree = DOM + CSSOM минус невидимые узлы. Он нужен для layout, paint и composite.
+- Критический путь рендеринга — это минимум ресурсов, блокирующих первую отрисовку. Его оптимизируют через `defer`/`async`, inline-критический CSS, предзагрузку шрифтов и уменьшение скриптов.
+- Layout самая дорогая фаза, paint — дешевле, composite — дешевле всего. `transform` и `opacity` анимируются на composite.
+- Чтение геометрии после изменения стилей вызывает forced synchronous layout — главный источник jank в JS-анимациях.
+
+## Полезные ссылки
+
+- [How Browsers Work: Behind the scenes of modern web browsers](https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/)
+- [Critical Rendering Path](https://developer.chrome.com/docs/devtools/performance/critical-rendering-path/) (Chrome DevTools)
+- [Rendering Performance](https://web.dev/articles/rendering-performance)
+- [Avoid forced synchronous layout](https://web.dev/articles/avoid-large-complex-layouts-and-layout-thrashing)
