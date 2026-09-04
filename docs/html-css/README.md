@@ -21,8 +21,8 @@
 | 4 | `html-web-components.md` | Custom elements, Shadow DOM, slots, lifecycle callbacks | ✅ готово |
 | 5 | `css-cascade-specificity.md` | Cascade, origin, `@layer`, specificity, inheritance, `!important` | ✅ готово |
 | 6 | `css-layout-formatting-contexts.md` | BFC/IFC/FFC/GFC, containing block, margin collapse, box-sizing | ✅ готово |
-| 7 | `css-flexbox.md` | Flexbox в глубину: оси, `flex-basis`, grow/shrink, alignment | 🚧 запланировано |
-| 8 | `css-grid.md` | Grid: explicit/implicit, `fr`, `minmax`, `auto-fit`/`auto-fill`, subgrid | 🚧 запланировано |
+| 7 | `css-flexbox.md` | Flexbox в глубину: оси, `flex-basis`, grow/shrink, alignment | ✅ готово |
+| 8 | `css-grid.md` | Grid: explicit/implicit, `fr`, `minmax`, `auto-fit`/`auto-fill`, subgrid | ✅ готово |
 | 9 | `css-positioning-stacking.md` | Positioning, stacking context, z-index, paint order | 🚧 запланировано |
 | 10 | `css-responsive-container-queries.md` | Media queries, container queries, viewport units, `prefers-*` | 🚧 запланировано |
 | 11 | `css-animations-performance.md` | Transitions/animations, composite-only свойства, `will-change`, `contain` | 🚧 запланировано |
