@@ -23,8 +23,8 @@
 | 6 | `css-layout-formatting-contexts.md` | BFC/IFC/FFC/GFC, containing block, margin collapse, box-sizing | ✅ готово |
 | 7 | `css-flexbox.md` | Flexbox в глубину: оси, `flex-basis`, grow/shrink, alignment | ✅ готово |
 | 8 | `css-grid.md` | Grid: explicit/implicit, `fr`, `minmax`, `auto-fit`/`auto-fill`, subgrid | ✅ готово |
-| 9 | `css-positioning-stacking.md` | Positioning, stacking context, z-index, paint order | 🚧 запланировано |
-| 10 | `css-responsive-container-queries.md` | Media queries, container queries, viewport units, `prefers-*` | 🚧 запланировано |
+| 9 | `css-positioning-stacking.md` | Positioning, stacking context, z-index, paint order | ✅ готово |
+| 10 | `css-responsive-container-queries.md` | Media queries, container queries, viewport units, `prefers-*` | ✅ готово |
 | 11 | `css-animations-performance.md` | Transitions/animations, composite-only свойства, `will-change`, `contain` | 🚧 запланировано |
 | 12 | `css-variables-architecture.md` | Custom properties, theming, BEM/CUBE/layers, CSS Modules vs CSS-in-JS | 🚧 запланировано |
 | 13 | `css-modern-selectors.md` | `:is`/`:where`/`:has`/`:not`, nesting, logical properties, color spaces | 🚧 запланировано |
