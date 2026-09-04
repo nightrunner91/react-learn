@@ -113,7 +113,7 @@
 - [ ] Современные селекторы: `:is`/`:where`/`:has`/`:not`, nesting, logical properties.
 - [ ] CSS custom properties: наследование, fallback, область видимости, JS API.
 
-[HTML/CSS раздел](./docs/html-css/README.md)
+[Парсинг HTML и рендеринг](./docs/html-css/html-rendering-pipeline.md) · [Семантика и доступность](./docs/html-css/html-semantics-accessibility.md) · [Формы и валидация](./docs/html-css/html-forms-validation.md) · [Web Components](./docs/html-css/html-web-components.md) · [Каскад и специфичность](./docs/html-css/css-cascade-specificity.md) · [Форматирование контекстов](./docs/html-css/css-layout-formatting-contexts.md) · [Flexbox](./docs/html-css/css-flexbox.md) · [Grid](./docs/html-css/css-grid.md) · [Позиционирование](./docs/html-css/css-positioning-stacking.md) · [Container queries](./docs/html-css/css-responsive-container-queries.md) · [Анимации и производительность](./docs/html-css/css-animations-performance.md) · [CSS-переменные](./docs/html-css/css-variables-architecture.md) · [Современные селекторы](./docs/html-css/css-modern-selectors.md)
 
 ---
 
