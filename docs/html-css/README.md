@@ -25,9 +25,9 @@
 | 8 | `css-grid.md` | Grid: explicit/implicit, `fr`, `minmax`, `auto-fit`/`auto-fill`, subgrid | ✅ готово |
 | 9 | `css-positioning-stacking.md` | Positioning, stacking context, z-index, paint order | ✅ готово |
 | 10 | `css-responsive-container-queries.md` | Media queries, container queries, viewport units, `prefers-*` | ✅ готово |
-| 11 | `css-animations-performance.md` | Transitions/animations, composite-only свойства, `will-change`, `contain` | 🚧 запланировано |
-| 12 | `css-variables-architecture.md` | Custom properties, theming, BEM/CUBE/layers, CSS Modules vs CSS-in-JS | 🚧 запланировано |
-| 13 | `css-modern-selectors.md` | `:is`/`:where`/`:has`/`:not`, nesting, logical properties, color spaces | 🚧 запланировано |
+| 11 | `css-animations-performance.md` | Transitions/animations, composite-only свойства, `will-change`, `contain` | ✅ готово |
+| 12 | `css-variables-architecture.md` | Custom properties, theming, BEM/CUBE/layers, CSS Modules vs CSS-in-JS | ✅ готово |
+| 13 | `css-modern-selectors.md` | `:is`/`:where`/`:has`/`:not`, nesting, logical properties, color spaces | ✅ готово |
 
 ## Рекомендуемый порядок написания
 
@@ -70,6 +70,10 @@
 - Как работают container queries?
 - Какие свойства безопасны для анимации с точки зрения производительности?
 - Как работают CSS custom properties и их область видимости?
+- В чём разница между `:is()` и `:where()` с точки зрения специфичности?
+- Как работает `:has()` и почему его называют «родительским селектором»?
+- Зачем нужны логические свойства (`inline-size`, `margin-inline`) и когда они выручают в RTL?
+- Почему `oklch()` предпочтительнее `hsl()` для построения цветовых палитр?
 
 ## Шаблон статьи
 
