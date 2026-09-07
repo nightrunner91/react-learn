@@ -228,17 +228,23 @@ TypeScript стал стандартом в React-разработке. На с�
 
 ## 8. API и коммуникация
 
-Фронтенд не живёт в вакууме — он постоянно общается с бэкендом. Нужно понимать, какие протоколы и подходы существуют, и когда какой применять.
+Фронтенд не живёт в вакууме — он постоянно общается с бэкендом. Нужно понимать, какие протоколы, клиенты и подходы существуют, и когда какой применять.
 
 - [ ] Что такое REST и какие у него ограничения (stateless, ресурсы, HTTP-методы)
 - [ ] Что такое over-fetching и under-fetching — и как GraphQL решает эти проблемы
 - [ ] Чем GraphQL отличается от REST — и в каких случаях что лучше выбрать
+- [ ] Какие HTTP-клиенты существуют (`fetch`, `axios`, `ky`, `ofetch`) — и когда что выбирать
+- [ ] Как организовать централизованный API-клиент и почему не стоит хардкодить `baseURL`
+- [ ] Что такое Long Polling и чем он отличается от WebSocket и SSE
+- [ ] Как реализовать Long Polling в React с обработкой ошибок и переподключениями
 - [ ] Что такое WebSocket и чем он отличается от HTTP и SSE (Server-Sent Events)
 - [ ] Как организовать WebSocket-соединение в React (хук `useWebSocket`, переподключения)
+- [ ] Как отменять HTTP-запросы через `AbortController` и зачем это нужно
+- [ ] Что такое race condition при запросах и как её избежать
 - [ ] Что такое паттерн BFF (Backend for Frontend) и зачем он нужен
 - [ ] Как обрабатывать ошибки API и какие коды ответов HTTP нужно знать
 
-[REST](./docs/api-communication/rest.md) · [GraphQL vs REST](./docs/api-communication/graphql-vs-rest.md) · [WebSocket](./docs/api-communication/websocket_react_next.md) · [BFF](./docs/architecture/backend_for_frontend.md)
+[REST](./docs/api-communication/rest.md) · [HTTP-клиенты](./docs/api-communication/http-clients.md) · [GraphQL vs REST](./docs/api-communication/graphql-vs-rest.md) · [Long Polling](./docs/api-communication/long-polling.md) · [WebSocket](./docs/api-communication/websocket_react_next.md) · [Отмена запросов](./docs/api-communication/request-abortion.md) · [BFF](./docs/architecture/backend_for_frontend.md)
 
 ---
 
