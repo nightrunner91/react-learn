@@ -10,8 +10,7 @@ JavaScript управляет памятью автоматически: про�
 4. [Типичные утечки памяти](#типичные-утечки-памяти)
 5. [Инструменты для поиска утечек](#инструменты-для-поиска-утечек)
 6. [`WeakRef` и `FinalizationRegistry`](#weakref-и-finalizationregistry)
-7. [Практические задачи](#практические-задачи)
-8. [Чеклист](#чеклист)
+7. [Чеклист](#чеклист)
 
 ---
 
@@ -287,112 +286,6 @@ user = null;
 ```
 
 Важно: callback запускается с неопределённой задержкой, и на него нельзя полагаться для точного управления ресурсами. `FinalizationRegistry` подходит для логирования, метрик и некритичной очистки, но не для освобождения файловых дескрипторов или сетевых соединений.
-
----
-
-## Практические задачи
-
-### Задача 1
-
-Какие из следующих ситуаций могут привести к утечке памяти?
-
-```js
-// A
-window.appState = { users: [] };
-
-// B
-function handler() {
-  console.log('click');
-}
-button.addEventListener('click', handler);
-
-// C
-const timer = setTimeout(() => console.log('done'), 1000);
-```
-
-**Ответ:** A и B потенциально опасны. A — глобальная переменная живёт вечно. B — если обработчик не снят, элемент удерживается в памяти. C — однократный `setTimeout` не ведёт к утечке, если не захватывает большие данные.
-
----
-
-### Задача 2
-
-Почему этот код может привести к утечке?
-
-```js
-function createCounter() {
-  const listeners = [];
-
-  return {
-    subscribe(fn) {
-      listeners.push(fn);
-    },
-    notify() {
-      listeners.forEach((fn) => fn());
-    },
-  };
-}
-```
-
-**Ответ:** Массив `listeners` растёт бесконечно, если подписки не отменяются. Каждый callback может также удерживать связанные с ним объекты. Решение — добавить метод `unsubscribe`, который удаляет обработчик.
-
----
-
-### Задача 3
-
-Реализуйте кэш на `WeakMap`, который не будет препятствовать сборке мусора объектов-ключей.
-
-**Решение:**
-
-```js
-const cache = new WeakMap();
-
-function processObject(obj) {
-  if (cache.has(obj)) {
-    return cache.get(obj);
-  }
-
-  const result = heavyComputation(obj);
-  cache.set(obj, result);
-  return result;
-}
-```
-
-Когда внешний код удалит все сильные ссылки на `obj`, запись в `WeakMap` автоматически исчезнет.
-
----
-
-### Задача 4
-
-Напишите функцию `memoize` с ограничением по количеству элементов (LRU-кэш).
-
-**Решение:**
-
-```js
-function memoize(fn, limit = 100) {
-  const cache = new Map();
-
-  return function (...args) {
-    const key = JSON.stringify(args);
-
-    if (cache.has(key)) {
-      const value = cache.get(key);
-      cache.delete(key);
-      cache.set(key, value);
-      return value;
-    }
-
-    const result = fn.apply(this, args);
-
-    if (cache.size >= limit) {
-      const oldestKey = cache.keys().next().value;
-      cache.delete(oldestKey);
-    }
-
-    cache.set(key, result);
-    return result;
-  };
-}
-```
 
 ---
 

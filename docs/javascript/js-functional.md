@@ -10,8 +10,7 @@
 4. [Каррирование и частичное применение](#каррирование-и-частичное-применение)
 5. [Композиция функций](#композиция-функций)
 6. [`debounce` и `throttle`](#debounce-и-throttle)
-7. [Практические задачи](#практические-задачи)
-8. [Чеклист](#чеклист)
+7. [Чеклист](#чеклист)
 
 ---
 
@@ -318,111 +317,6 @@ window.addEventListener('scroll', handleScroll);
 |---|---|---|
 | `debounce` | После паузы между вызовами | Поиск по вводу |
 | `throttle` | Регулярно, не чаще интервала | Обработка скролла |
-
----
-
-## Практические задачи
-
-### Задача 1
-
-Напишите функцию `sum`, которая суммирует все числа в массиве, используя `reduce`.
-
-**Решение:**
-
-```js
-function sum(numbers) {
-  return numbers.reduce((acc, n) => acc + n, 0);
-}
-
-console.log(sum([1, 2, 3, 4])); // 10
-```
-
----
-
-### Задача 2
-
-Напишите функцию `getAdultNames`, которая принимает массив пользователей и возвращает строку с именами совершеннолетних через запятую.
-
-```js
-const users = [
-  { name: 'Alice', age: 17 },
-  { name: 'Bob', age: 22 },
-  { name: 'Carol', age: 19 },
-];
-```
-
-**Решение:**
-
-```js
-function getAdultNames(users) {
-  return users
-    .filter((u) => u.age >= 18)
-    .map((u) => u.name)
-    .join(', ');
-}
-
-console.log(getAdultNames(users)); // Bob, Carol
-```
-
----
-
-### Задача 3
-
-Реализуйте каррированную функцию `sum(a)(b)(c)`, которая возвращает сумму трёх чисел.
-
-**Решение:**
-
-```js
-const sum = (a) => (b) => (c) => a + b + c;
-
-console.log(sum(1)(2)(3)); // 6
-```
-
----
-
-### Задача 4
-
-Напишите функцию `compose`, которая принимает произвольное количество функций и возвращает их композицию.
-
-**Решение:**
-
-```js
-const compose = (...fns) => (x) =>
-  fns.reduceRight((acc, fn) => fn(acc), x);
-
-const addOne = (x) => x + 1;
-const double = (x) => x * 2;
-
-console.log(compose(addOne, double)(5)); // 11
-```
-
----
-
-### Задача 5
-
-Реализуйте `debounce` с возможностью немедленного выполнения первого вызова (`leading: true`).
-
-**Решение:**
-
-```js
-function debounce(fn, delay, { leading = false } = {}) {
-  let timerId;
-  let called = false;
-
-  return function (...args) {
-    if (leading && !timerId && !called) {
-      fn.apply(this, args);
-      called = true;
-    }
-
-    clearTimeout(timerId);
-    timerId = setTimeout(() => {
-      timerId = null;
-      called = false;
-    }, delay);
-  };
-}
-```
 
 ---
 

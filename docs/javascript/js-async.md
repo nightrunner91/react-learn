@@ -12,8 +12,7 @@ JavaScript — однопоточный язык, но большая часть
 6. [Последовательное и параллельное выполнение](#последовательное-и-параллельное-выполнение)
 7. [Обработка ошибок](#обработка-ошибок)
 8. [Отмена асинхронных операций: AbortController](#отмена-асинхронных-операций-abortcontroller)
-9. [Практические задачи](#практические-задачи)
-10. [Чеклист](#чеклист)
+9. [Чеклист](#чеклист)
 
 ---
 
@@ -392,89 +391,6 @@ useEffect(() => {
 ```
 
 `AbortController` помогает избежать состояний-гонок (race conditions), когда старый запрос приходит позже нового.
-
----
-
-## Практические задачи
-
-### Задача 1
-
-Что выведет код?
-
-```js
-console.log('A');
-
-setTimeout(() => console.log('B'), 0);
-
-Promise.resolve().then(() => console.log('C'));
-
-console.log('D');
-```
-
-**Ответ:** `A`, `D`, `C`, `B`. Сначала синхронный код, затем микрозадачи, затем макрозадачи.
-
----
-
-### Задача 2
-
-Что выведет код?
-
-```js
-async function foo() {
-  console.log(1);
-  await Promise.resolve();
-  console.log(2);
-}
-
-foo();
-console.log(3);
-```
-
-**Ответ:** `1`, `3`, `2`. `await` откладывает продолжение функции в микрозадачи.
-
----
-
-### Задача 3
-
-Напишите функцию, которая загружает два независимых ресурса параллельно и возвращает результат, или выбрасывает ошибку, если любой из запросов не удался.
-
-**Решение:**
-
-```js
-async function loadParallel(url1, url2) {
-  const [a, b] = await Promise.all([
-    fetch(url1).then(r => r.json()),
-    fetch(url2).then(r => r.json()),
-  ]);
-  return { a, b };
-}
-```
-
----
-
-### Задача 4
-
-Напишите функцию `fetchWithTimeout(url, ms)`, которая отклоняется, если запрос занимает больше `ms` миллисекунд.
-
-**Решение:**
-
-```js
-function fetchWithTimeout(url, ms) {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), ms);
-
-  return fetch(url, { signal: controller.signal })
-    .finally(() => clearTimeout(timeout));
-}
-```
-
----
-
-### Задача 5
-
-Какой результат у `Promise.all([Promise.resolve(1), 2, Promise.resolve(3)])`?
-
-**Ответ:** `[1, 2, 3]`. `Promise.all` оборачивает не-Promise значения в `Promise.resolve`.
 
 ---
 

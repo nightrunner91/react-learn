@@ -11,8 +11,7 @@
 5. [Практические примеры](#практические-примеры)
 6. [Proxy в реальных фреймворках: Vue 3](#proxy-в-реальных-фреймворках-vue-3)
 7. [Ограничения Proxy](#ограничения-proxy)
-8. [Практические задачи](#практические-задачи)
-9. [Чеклист](#чеклист)
+8. [Чеклист](#чеклист)
 
 ---
 
@@ -451,101 +450,6 @@ Vue 3 не делает реактивными вложенные объекты
    revoke();
    console.log(proxy.value); // TypeError
    ```
-
----
-
-## Практические задачи
-
-### Задача 1
-
-Что выведет код?
-
-```js
-const target = { a: 1 };
-const proxy = new Proxy(target, {
-  get(target, prop) {
-    return prop in target ? target[prop] : 42;
-  },
-});
-
-console.log(proxy.a, proxy.b);
-```
-
-**Ответ:** `1 42`. Ловушка `get` возвращает значение по умолчанию `42` для отсутствующих свойств.
-
----
-
-### Задача 2
-
-Реализуйте прокси `readonly(obj)`, который запрещает запись и удаление свойств.
-
-**Решение:**
-
-```js
-function readonly(target) {
-  return new Proxy(target, {
-    set() {
-      throw new TypeError('Cannot modify readonly object');
-    },
-    deleteProperty() {
-      throw new TypeError('Cannot delete readonly property');
-    },
-  });
-}
-
-const config = readonly({ env: 'production' });
-// config.env = 'dev';      // TypeError
-// delete config.env;       // TypeError
-```
-
----
-
-### Задача 3
-
-Что выведет код?
-
-```js
-const target = { x: 1 };
-const proxy = new Proxy(target, {});
-
-console.log(proxy === target);
-```
-
-**Ответ:** `false`. Proxy — это отдельный объект, даже если он оборачивает `target`.
-
----
-
-### Задача 4
-
-Реализуйте прокси для массива, который при чтении по отрицательному индексу отсчитывает элементы с конца.
-
-**Решение:**
-
-```js
-function createNegativeArray(arr) {
-  return new Proxy(arr, {
-    get(target, prop) {
-      const index = Number(prop);
-      if (!isNaN(index) && index < 0) {
-        return target[target.length + index];
-      }
-      return Reflect.get(target, prop);
-    },
-  });
-}
-
-const arr = createNegativeArray([1, 2, 3]);
-console.log(arr[-1]); // 3
-console.log(arr[0]);  // 1
-```
-
----
-
-### Задача 5
-
-Почему в ловушках Proxy рекомендуется использовать `Reflect` вместо прямого обращения к `target[prop]`?
-
-**Ответ:** `Reflect` корректно передаёт `receiver`, обрабатывает getter/setter с правильным `this`, возвращает булев результат для `set`/`deleteProperty` и соответствует семантике внутренних операций движка. Прямое обращение к `target[prop]` может нарушить поведение наследования и getter/setter.
 
 ---
 
