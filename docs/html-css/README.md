@@ -8,7 +8,7 @@
 
 1. **[Парсинг HTML и критический путь рендеринга](./html-rendering-pipeline.md)** — DOM/CSSOM/Render Tree, Layout/Paint/Composite, preload scanner.
 2. **[Каскад и специфичность](./css-cascade-specificity.md)** — cascade, origin, `@layer`, specificity, inheritance, `!important`.
-3. **[Форматting контексты и блочная модель](./css-layout-formatting-contexts.md)** — BFC/IFC/FFC/GFC, containing block, margin collapse, box-sizing.
+3. **[Formatting контексты и блочная модель](./css-layout-formatting-contexts.md)** — BFC/IFC/FFC/GFC, containing block, margin collapse, box-sizing.
 4. **[Flexbox](./css-flexbox.md)** — оси, `flex-basis`, grow/shrink, alignment.
 5. **[Grid](./css-grid.md)** — explicit/implicit, `fr`, `minmax`, `auto-fit`/`auto-fill`, subgrid.
 6. **[Позиционирование и stacking context](./css-positioning-stacking.md)** — positioning, stacking context, z-index, paint order.
