@@ -240,6 +240,101 @@ if ([]) { /* выполнится */ }
 if ({}) { /* выполнится */ }
 ```
 
+### Преобразование объектов в примитивы (ToPrimitive)
+
+Когда объект участвует в операции, требующей примитива (сравнение, арифметика, конкатенация), JavaScript вызывает внутренний алгоритм **ToPrimitive**. Он определяет «подсказку» (hint) — какой тип ожидается:
+
+- **hint "string"** — для `String(obj)`, конкатенации через `+` с строкой, `alert(obj)`.
+- **hint "number"** — для арифметики (`-`, `*`, `/`), `Number(obj)`, сравнений `<`, `>`.
+- **hint "default"** — для `==`, `+` без явного строкового операнда, `new Date() == value`.
+
+Алгоритм пытается получить примитив в таком порядке:
+
+1. Для hint **"string"**: сначала `toString()`, затем `valueOf()`.
+2. Для hint **"number"** и **"default"**: сначала `valueOf()`, затем `toString()`.
+
+Если ни один метод не вернул примитив — ошибка `TypeError`.
+
+```js
+const obj = {
+  toString() { return 'hello'; },
+  valueOf() { return 42; }
+};
+
+console.log(String(obj));  // "hello" (hint "string" → toString)
+console.log(Number(obj));  // 42 (hint "number" → valueOf)
+console.log(obj + '');     // "42" (hint "default" → valueOf → 42, затем строка)
+console.log(obj + 10);     // 52 (hint "default" → valueOf → 42, затем число)
+```
+
+### Почему `[] == false` даёт `true`
+
+Разберём по шагам:
+
+```js
+[] == false; // true
+```
+
+1. `false` — булево, преобразуется в число: `Number(false)` → `0`.
+2. `[]` — объект, hint "default". Вызывается `valueOf()` — возвращает сам массив (не примитив).
+3. Тогда вызывается `toString()` — пустой массив даёт пустую строку `''`.
+4. Пустая строка преобразуется в число: `Number('')` → `0`.
+5. Сравниваем: `0 == 0` → `true`.
+
+Аналогично для `[] == 0`:
+
+```js
+[] == 0; // true
+// [] → '' → 0, затем 0 == 0
+```
+
+### `Symbol.toPrimitive` — переопределение поведения
+
+Метод `Symbol.toPrimitive` позволяет явно указать, как объект преобразуется в примитив для каждого hint:
+
+```js
+const money = {
+  amount: 100,
+  [Symbol.toPrimitive](hint) {
+    console.log(`hint: ${hint}`);
+    if (hint === 'string') return `$${this.amount}`;
+    if (hint === 'number') return this.amount;
+    return this.amount; // default
+  }
+};
+
+console.log(String(money));  // "hint: string" → "$100"
+console.log(Number(money));  // "hint: number" → 100
+console.log(money + '');     // "hint: default" → "100"
+console.log(money * 2);      // "hint: number" → 200
+```
+
+Если определён `Symbol.toPrimitive`, он имеет приоритет над `valueOf` и `toString`.
+
+### `valueOf` и `toString` — legacy-методы
+
+До появления `Symbol.toPrimitive` объекты полагались на `valueOf` и `toString`. Они всё ещё работают:
+
+```js
+const point = {
+  x: 3,
+  y: 4,
+  valueOf() {
+    return Math.sqrt(this.x ** 2 + this.y ** 2); // 5
+  },
+  toString() {
+    return `(${this.x}, ${this.y})`;
+  }
+};
+
+console.log(Number(point));  // 5 (valueOf)
+console.log(String(point));  // "(3, 4)" (toString)
+console.log(point + 10);     // 15 (valueOf → 5, затем +10)
+console.log(`${point}`);     // "(3, 4)" (template literal → toString)
+```
+
+**Важно:** `toString` вызывается автоматически при интерполяции в template literal (`${obj}`) — hint "string".
+
 ### Falsy и truthy
 
 **Falsy** — значения, которые преобразуются в `false`:
@@ -347,3 +442,6 @@ typeof NaN; // "number"
 - [ ] Как явно преобразовать значение в число, строку или булево.
 - [ ] Чем `Object.is` отличается от `===`.
 - [ ] Почему `0.1 + 0.2 !== 0.3`.
+- [ ] Как объекты преобразуются в примитивы (ToPrimitive, hint).
+- [ ] Чем `Symbol.toPrimitive` отличается от `valueOf`/`toString`.
+- [ ] Почему `[] == false` даёт `true`.
