@@ -138,16 +138,25 @@
 TypeScript стал стандартом в React-разработке. На собеседовании спрашивают не «знаешь ли ты TS», а насколько глубоко ты понимаешь дженерики, utility-типы и умеешь типизировать хуки и компоненты.
 
 - [ ] Чем `interface` отличается от `type` — и когда что использовать
+- [ ] Чем отличаются `any`, `unknown`, `never` и `void` — и когда что использовать
 - [ ] Что такое дженерики (generics) и как писать типобезопасные функции и компоненты
 - [ ] Как работают constraints (`extends`) и default types в дженериках
 - [ ] Что такое utility-типы (`Partial`, `Required`, `Pick`, `Omit`, `Record`, `ReturnType`, `Parameters`) — и как они реализованы под капотом
+- [ ] Как работают mapped types и как создать свой utility-тип
 - [ ] Что такое conditional types и как работает `infer`
 - [ ] Что такое type guards и как сужать типы (`is`, `in`, discriminated unions)
+- [ ] Что такое discriminated unions и exhaustiveness checking
+- [ ] Как работают операторы `keyof` и `typeof`
+- [ ] Что такое literal types и template literal types
+- [ ] Чем enum отличается от union types — и почему `as const` часто лучше enum
+- [ ] Что такое `satisfies` оператор и чем отличается от `as`
+- [ ] Как работают function overloads и когда их использовать
 - [ ] Как типизировать пропсы, события и хуки в React-компонентах
 - [ ] Как типизировать кастомные хуки с дженериками и async-паттерны (AbortController, fetch-машина)
-- [ ] Чем enum отличается от union types — и почему `as const` часто лучше enum
 - [ ] Что такое декораторы и где они применяются (NestJS, MobX)
-- [ ] Как работает mapped types и как создать свой utility-тип
+- [ ] Как работает strict mode и какие флаги tsconfig важны
+- [ ] Что такое declaration files (`.d.ts`) и module augmentation
+- [ ] Что такое covariance и contravariance в TypeScript
 
 [TypeScript Generics](./docs/typescript/typescript-generics.md) · [Utility Types](./docs/typescript/typescript-utility-types.md) · [TypeGuard](./docs/typescript/typescript-typeguard.md) · [Хуки и async-паттерны](./docs/typescript/typescript-hooks-async.md) · [`infer`](./docs/typescript/typescript-infer.md) · [Enums](./docs/typescript/typescript-enums.md) · [Decorators](./docs/typescript/typescript-decorators.md) · [TypeScript в React](./docs/typescript/typescript-react.md) · [Return Types](./docs/typescript/typescript-function-return-types.md)
 
